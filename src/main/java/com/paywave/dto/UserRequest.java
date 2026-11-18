@@ -5,6 +5,15 @@ public class UserRequest {
     private String mobileNumber;
     private String email;
     private String password;
+    private String mpin;
+
+    public String getMpin() {
+        return mpin;
+    }
+
+    public void setMpin(String mpin) {
+        this.mpin = mpin;
+    }
 
     public String getPassword() {
         return password;
@@ -12,10 +21,6 @@ public class UserRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public UserRequest(){
-
     }
 
     public String getName() {

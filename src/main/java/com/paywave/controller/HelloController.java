@@ -24,9 +24,4 @@ public class HelloController {
     public String getUserTransaction( @PathVariable int id , @RequestParam(defaultValue = "5") int limit){
         return "Showing last " + limit + " transaction for User " + id;
     }
-
-    @PostMapping("/api/users/register")
-    public String registration(@RequestBody UserRequest userRequest){
-        return "Registration received ! Name : " + userRequest.getName() + "Mobile Number : " + userRequest.getMobileNumber() + "Email : " + userRequest.getEmail();
-    }
 }
