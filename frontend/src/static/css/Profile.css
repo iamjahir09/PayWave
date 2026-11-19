@@ -1,0 +1,545 @@
+
+/* ================================
+   PROFILE PAGE
+================================ */
+
+.profile-page {
+  min-height: 100vh;
+  background: #f7f5f1;
+  color: #172b3a;
+  padding-bottom: 30px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px;
+}
+
+.profile-back-button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e8e2da;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #172b3a;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-header h1 {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.profile-header p {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #77838d;
+}
+
+.profile-header-icon {
+  margin-left: auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  background: #fff0df;
+  color: #f28c28;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-content {
+  padding: 0 22px;
+}
+
+/* ================================
+   USER CARD
+================================ */
+
+.profile-user-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 19px;
+  background: #ffffff;
+  border: 1px solid #e8e2da;
+  border-radius: 18px;
+  box-shadow: 0 5px 18px rgba(23, 43, 58, 0.04);
+}
+
+.profile-avatar {
+  width: 57px;
+  height: 57px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  background: #172b3a;
+  color: #ffad55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.profile-user-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-user-info h2 {
+  font-size: 16px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.profile-user-info p {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #77838d;
+}
+
+.profile-user-info span {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #fff0df;
+  color: #d97716;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.profile-member-check {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background: #16865c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ================================
+   SECTION HEADINGS
+================================ */
+
+.profile-section {
+  margin-top: 29px;
+}
+
+.profile-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 13px;
+}
+
+.profile-section-heading h2 {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.profile-section-heading span,
+.profile-eyebrow {
+  color: #f28c28;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* ================================
+   PERSONAL INFORMATION
+================================ */
+
+.profile-info-card,
+.profile-menu-card {
+  background: #ffffff;
+  border: 1px solid #e8e2da;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.profile-info-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 15px;
+  border-bottom: 1px solid #f0ece6;
+}
+
+.profile-info-row:last-child {
+  border-bottom: none;
+}
+
+.profile-info-icon {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #fff0df;
+  color: #e77b16;
+}
+
+.profile-info-row small {
+  display: block;
+  margin-bottom: 5px;
+  color: #77838d;
+  font-size: 10px;
+}
+
+.profile-info-row strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+/* ================================
+   MENU ITEMS
+================================ */
+
+.profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 13px 15px;
+  border-bottom: 1px solid #f0ece6;
+}
+
+.profile-menu-item:last-child {
+  border-bottom: none;
+}
+
+.profile-menu-icon {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.profile-menu-icon.security {
+  background: #e8f5ee;
+  color: #16865c;
+}
+
+.profile-menu-icon.pin {
+  background: #fff0df;
+  color: #e77b16;
+}
+
+.profile-menu-icon.notifications {
+  background: #f0ecff;
+  color: #8064c8;
+}
+
+.profile-menu-icon.help {
+  background: #eaf2ff;
+  color: #3977c6;
+}
+
+.profile-menu-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-menu-text strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.profile-menu-text small {
+  display: block;
+  margin-top: 5px;
+  font-size: 10px;
+  color: #77838d;
+}
+
+.profile-menu-arrow {
+  color: #a0aab1;
+  font-size: 24px;
+}
+
+/* ================================
+   LOGOUT
+================================ */
+
+.profile-logout-button {
+  width: 100%;
+  min-height: 49px;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid #f1d5d5;
+  border-radius: 13px;
+  background: #fff5f5;
+  color: #dc4545;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.profile-logout-button:active {
+  transform: scale(0.98);
+}
+
+.profile-version {
+  margin-top: 20px;
+  text-align: center;
+  color: #a0aab1;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ================================
+   BOTTOM QR WALLET
+================================ */
+
+.profile-wallet-section {
+  margin-top: 45px;
+  padding: 25px 0 35px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.profile-wallet-heading {
+  margin-bottom: 15px;
+}
+
+.profile-wallet-heading h2 {
+  margin-top: 7px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #172b3a;
+}
+
+.profile-wallet-heading p {
+  margin-top: 6px;
+  color: #77838d;
+  font-size: 12px;
+}
+
+/* Wallet animation area */
+
+.profile-wallet-stage {
+  position: relative;
+  width: 100%;
+  height: 330px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+/* ================================
+   QR CARD
+================================ */
+
+.profile-wallet-qr-card {
+  position: absolute;
+  z-index: 1;
+  bottom: 55px;
+  width: 225px;
+  padding: 15px;
+  background: #ffffff;
+  border: 1px solid #e8e2da;
+  border-radius: 17px;
+  box-shadow: 0 8px 25px rgba(23, 43, 58, 0.13);
+
+  /* Initially inside wallet */
+  opacity: 0;
+  transform: translateY(125px) scale(0.9);
+
+  /* Smooth animation in both directions */
+  transition:
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.7s ease;
+}
+
+/* QR comes out of wallet */
+
+.profile-wallet-section.revealed .profile-wallet-qr-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ================================
+   QR CARD CONTENTS
+================================ */
+
+.profile-wallet-qr-card .profile-qr-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  color: #172b3a;
+  font-size: 15px;
+}
+
+.profile-wallet-qr-card .profile-qr-visual {
+  width: 125px;
+  height: 125px;
+  margin: 12px auto;
+  padding: 7px;
+  border: 1px solid #e8e2da;
+  border-radius: 8px;
+}
+
+.profile-wallet-qr-card .profile-qr-visual svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.profile-wallet-qr-card h3 {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.profile-wallet-qr-card .profile-demo-id {
+  margin-top: 3px;
+  color: #77838d;
+  font-size: 11px;
+}
+
+.profile-wallet-qr-card .profile-qr-demo-label {
+  display: block;
+  margin-top: 8px;
+  color: #dc4545;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.profile-wallet-qr-card .profile-copy-button {
+  width: 100%;
+  min-height: 34px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 9px;
+  background: #172b3a;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ================================
+   WALLET BODY
+================================ */
+
+.profile-wallet-body {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  width: 275px;
+  height: 115px;
+}
+
+.profile-wallet-front {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  padding: 25px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(145deg, #263e4d, #172b3a);
+  border: 2px solid #f28c28;
+  border-radius: 15px 15px 22px 22px;
+  box-shadow: 0 12px 25px rgba(23, 43, 58, 0.2);
+}
+
+.profile-wallet-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.profile-wallet-decoration {
+  width: 35px;
+  height: 25px;
+  border: 2px solid #ffad55;
+  border-radius: 6px;
+}
+
+/* Wallet flap */
+
+.profile-wallet-flap {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 50%;
+  width: 75px;
+  height: 22px;
+  transform: translateX(-50%);
+  background: #f28c28;
+  border-radius: 0 0 12px 12px;
+}
+
+.profile-wallet-clasp {
+  width: 22px;
+  height: 7px;
+  margin: 7px auto;
+  background: #172b3a;
+  border-radius: 5px;
+}
+
+/* ================================
+   QR NOTE
+================================ */
+
+.profile-qr-note {
+  max-width: 300px;
+  margin: 18px auto 0;
+  color: #77838d;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 360px) {
+  .profile-content {
+    padding: 0 16px;
+  }
+
+  .profile-wallet-body {
+    width: 250px;
+  }
+
+  .profile-wallet-qr-card {
+    width: 215px;
+  }
+}
+
+/* ================================
+   ACCESSIBILITY
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-wallet-qr-card {
+    transition: none;
+  }
+}

@@ -1,0 +1,109 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  font-family: "Inter", sans-serif;
+  color: #172b3a;
+  background: #f7f5f1;
+
+  /* Brand Colors */
+  --primary: #172b3a;
+  --primary-light: #263e4d;
+  --secondary: #f28c28;
+  --accent: #ffad55;
+
+  /* Backgrounds */
+  --background: #f7f5f1;
+  --white: #ffffff;
+  --orange-light: #fff0df;
+
+  /* Text */
+  --text: #172b3a;
+  --muted: #77838d;
+
+  /* Borders */
+  --border: #e8e2da;
+
+  /* Status */
+  --success: #16865c;
+  --danger: #dc4545;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  min-height: 100%;
+  background: var(--background);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  background: var(--background);
+  color: var(--text);
+  overscroll-behavior-y: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Desktop mobile-app preview */
+
+@media (min-width: 700px) {
+  body {
+    background: #e9e5df;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: var(--background);
+    box-shadow: 0 0 40px rgba(23, 43, 58, 0.10);
+  }
+}
+@media (min-width: 700px) {
+  html,
+  body {
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
+}

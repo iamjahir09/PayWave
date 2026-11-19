@@ -1,0 +1,494 @@
+
+.bank-page {
+  min-height: 100vh;
+  padding: 25px 22px 35px;
+  background: #f7f5f1;
+  color: #172b3a;
+}
+
+/* Header */
+
+.bank-page-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.bank-back-button {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: 1px solid #e8e2da;
+  border-radius: 13px;
+  background: #ffffff;
+  color: #172b3a;
+  font-size: 25px;
+}
+
+.bank-page-header > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.bank-page-header h1 {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.bank-page-header p {
+  margin-top: 4px;
+  color: #89939a;
+  font-size: 11px;
+}
+
+.bank-header-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #172b3a;
+}
+
+/* Intro */
+
+.bank-intro {
+  margin-top: 34px;
+  margin-bottom: 27px;
+}
+
+.bank-eyebrow {
+  color: #e77b16;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.bank-intro h2 {
+  max-width: 290px;
+  margin-top: 10px;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.bank-intro p {
+  max-width: 300px;
+  margin-top: 9px;
+  color: #77838d;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Linked Accounts */
+
+.linked-accounts-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.linked-accounts-heading h3 {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.linked-accounts-heading span {
+  color: #e77b16;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.linked-accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.linked-bank-card {
+  padding: 17px;
+  border: 1px solid #eae4dc;
+  border-radius: 19px;
+  background: #ffffff;
+  box-shadow: 0 5px 17px rgba(23, 43, 58, 0.035);
+}
+
+.linked-bank-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.linked-bank-logo {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #fff0df;
+}
+
+.linked-bank-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #16865c;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.linked-bank-status > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16865c;
+}
+
+.linked-bank-card h4 {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.linked-account-type {
+  margin-top: 4px;
+  color: #89939a;
+  font-size: 10px;
+}
+
+.linked-account-number {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding: 12px 0;
+  border-top: 1px solid #eee8df;
+  color: #77838d;
+  font-size: 10px;
+}
+
+.linked-account-number strong {
+  color: #172b3a;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.bank-check-button {
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 13px;
+  border: none;
+  border-radius: 12px;
+  background: #fff0df;
+  color: #172b3a;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.bank-check-button > span {
+  margin-left: auto;
+  color: #e77b16;
+  font-size: 18px;
+}
+
+/* Security note */
+
+.bank-security-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 14px;
+  border: 1px solid #dcebe2;
+  border-radius: 13px;
+  background: #edf6f0;
+}
+
+.bank-security-note svg {
+  flex-shrink: 0;
+}
+
+.bank-security-note p {
+  color: #536f60;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+/* Selected account */
+
+.account-verification {
+  margin-top: 28px;
+}
+
+.selected-bank-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid #eae4dc;
+  border-radius: 17px;
+  background: #ffffff;
+}
+
+.selected-bank-logo {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #172b3a;
+}
+
+.selected-bank-card h3 {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.selected-bank-card p {
+  margin-top: 5px;
+  color: #89939a;
+  font-size: 10px;
+}
+
+/* PIN Form */
+
+.upi-pin-card {
+  margin-top: 22px;
+  padding: 23px 19px;
+  border: 1px solid #eae4dc;
+  border-radius: 21px;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(23, 43, 58, 0.04);
+}
+
+.pin-security-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 19px;
+  border-radius: 17px;
+  background: #fff0df;
+}
+
+.upi-pin-card h2 {
+  margin-top: 9px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+}
+
+.upi-pin-card > p:not(.bank-pin-error):not(.demo-pin-hint) {
+  margin-top: 9px;
+  margin-bottom: 24px;
+  color: #77838d;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.upi-pin-card label {
+  display: block;
+  margin-bottom: 10px;
+  color: #344b5a;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.upi-pin-input {
+  width: 100%;
+  height: 54px;
+  padding: 0 15px;
+  border: 1px solid #e8e2da;
+  border-radius: 12px;
+  outline: none;
+  background: #faf9f7;
+  color: #172b3a;
+  font-size: 19px;
+  letter-spacing: 9px;
+  text-align: center;
+}
+
+.upi-pin-input:focus {
+  border-color: #f28c28;
+  box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.10);
+}
+
+.upi-pin-input::placeholder {
+  color: #aab1b6;
+  font-size: 13px;
+  letter-spacing: 3px;
+}
+
+.bank-pin-error {
+  margin-top: 10px;
+  color: #dc4545;
+  font-size: 11px;
+}
+
+.verify-pin-button {
+  width: 100%;
+  min-height: 49px;
+  margin-top: 17px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: #172b3a;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.verify-pin-button span {
+  color: #ffad55;
+  font-size: 18px;
+}
+
+.verify-pin-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pin-privacy-note {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  margin-top: 19px;
+  color: #77838d;
+  font-size: 9px;
+}
+
+.pin-privacy-note svg {
+  flex-shrink: 0;
+}
+
+.demo-pin-hint {
+  margin-top: 13px;
+  color: #a0a8ad;
+  font-size: 9px;
+  text-align: center;
+}
+
+/* Balance Result */
+
+.balance-result-card {
+  margin-top: 22px;
+  padding: 21px;
+  border-radius: 21px;
+  background: #172b3a;
+  color: #ffffff;
+  box-shadow: 0 12px 26px rgba(23, 43, 58, 0.14);
+}
+
+.balance-result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #bdc8ce;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.balance-verified {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #a9e1c2;
+  font-size: 8px;
+}
+
+.balance-verified > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #50c78b;
+}
+
+.balance-result-icon {
+  width: 51px;
+  height: 51px;
+  display: grid;
+  place-items: center;
+  margin-top: 26px;
+  border-radius: 15px;
+  background: #304654;
+}
+
+.balance-result-card > p {
+  margin-top: 19px;
+  color: #bdc8ce;
+  font-size: 11px;
+}
+
+.balance-result-card h2 {
+  margin-top: 7px;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.balance-result-divider {
+  height: 1px;
+  margin: 22px 0 15px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.balance-result-bank {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #d5dde1;
+  font-size: 10px;
+}
+
+.hide-balance-button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 11px;
+  background: #ffad55;
+  color: #172b3a;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.balance-demo-note {
+  margin-top: 13px;
+  color: #bdc8ce;
+  font-size: 9px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 360px) {
+  .bank-page {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .bank-intro h2 {
+    font-size: 25px;
+  }
+
+  .balance-result-card h2 {
+    font-size: 28px;
+  }
+}

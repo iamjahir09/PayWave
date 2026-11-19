@@ -36,6 +36,8 @@ public class User {
     @Column(name = "mpin_hash", length = 255)
     private String mpin_hash;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Wallet wallet;
     public String getMpin_hash() {
         return mpin_hash;
     }

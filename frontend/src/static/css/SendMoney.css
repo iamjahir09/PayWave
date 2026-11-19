@@ -1,0 +1,703 @@
+
+/* ================================
+   SEND MONEY PAGE
+================================ */
+
+.send-money-page {
+  min-height: 100vh;
+  padding-bottom: 35px;
+  background: #f7f5f1;
+  color: #172b3a;
+}
+
+.send-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px;
+}
+
+.send-back-button {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid #e8e2da;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #172b3a;
+  font-size: 24px;
+}
+
+.send-header h1 {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.send-header p {
+  margin-top: 4px;
+  color: #77838d;
+  font-size: 11px;
+}
+
+.send-header-icon {
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background: #fff0df;
+  color: #f28c28;
+}
+
+/* ================================
+   PROGRESS INDICATOR
+================================ */
+
+.send-progress {
+  display: flex;
+  gap: 7px;
+  padding: 0 22px;
+  margin-bottom: 28px;
+}
+
+.send-progress-item {
+  flex: 1;
+  height: 5px;
+  border-radius: 10px;
+  background: #e8e2da;
+  transition: background 0.3s ease;
+}
+
+.send-progress-item.active {
+  background: #f28c28;
+}
+
+/* ================================
+   CONTENT
+================================ */
+
+.send-content {
+  padding: 0 22px;
+  animation: sendFadeIn 0.35s ease;
+}
+
+@keyframes sendFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.send-intro {
+  margin-bottom: 25px;
+}
+
+.send-eyebrow {
+  color: #f28c28;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.send-intro h2,
+.send-success-content h2 {
+  margin-top: 8px;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.send-intro p {
+  margin-top: 7px;
+  color: #77838d;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ================================
+   INPUT CARD
+================================ */
+
+.send-input-card,
+.send-amount-card,
+.send-note-card {
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e8e2da;
+  border-radius: 16px;
+}
+
+.send-input-card label,
+.send-amount-card label,
+.send-note-card label {
+  display: block;
+  margin-bottom: 12px;
+  color: #77838d;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+}
+
+.send-input-card input,
+.send-note-card input {
+  width: 100%;
+  height: 45px;
+  padding: 0 12px;
+  border: 1px solid #e8e2da;
+  border-radius: 10px;
+  outline: none;
+  background: #fdfcfb;
+  color: #172b3a;
+  font-size: 12px;
+}
+
+.send-input-card input:focus,
+.send-note-card input:focus {
+  border-color: #f28c28;
+}
+
+.send-input-card input::placeholder,
+.send-note-card input::placeholder {
+  color: #a0aab1;
+}
+
+/* ================================
+   CONTACTS
+================================ */
+
+.send-contact-section {
+  margin-top: 27px;
+}
+
+.send-contact-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.send-contact-heading h3 {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.send-contact-heading span {
+  color: #f28c28;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+}
+
+.send-contact-item {
+  width: 100%;
+  min-height: 69px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid #e8e2da;
+  border-radius: 13px;
+  background: #ffffff;
+  text-align: left;
+  transition: border-color 0.2s ease;
+}
+
+.send-contact-item.selected {
+  border-color: #f28c28;
+  background: #fffaf4;
+}
+
+.send-contact-avatar {
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #fff0df;
+  color: #d97716;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.send-contact-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.send-contact-details strong,
+.selected-recipient strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.send-contact-details small,
+.selected-recipient small {
+  display: block;
+  margin-top: 5px;
+  color: #77838d;
+  font-size: 10px;
+}
+
+.send-contact-check {
+  color: #16865c;
+  font-weight: 800;
+}
+
+.selected-recipient {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #f0ece6;
+}
+
+.selected-recipient > div:nth-child(2) {
+  flex: 1;
+}
+
+/* ================================
+   SELECTED RECIPIENT
+================================ */
+
+.send-selected-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 20px;
+  border: 1px solid #e8e2da;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.send-selected-user strong {
+  display: block;
+  font-size: 13px;
+}
+
+.send-selected-user small {
+  display: block;
+  margin-top: 5px;
+  color: #77838d;
+  font-size: 10px;
+}
+
+/* ================================
+   AMOUNT
+================================ */
+
+.send-amount-card {
+  padding: 22px 18px;
+  text-align: center;
+}
+
+.send-amount-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 12px 0 22px;
+}
+
+.send-amount-input span {
+  color: #f28c28;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.send-amount-input input {
+  width: 180px;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #172b3a;
+  font-size: 40px;
+  font-weight: 800;
+  text-align: left;
+}
+
+.send-amount-input input::placeholder {
+  color: #c7c3bd;
+}
+
+.send-amount-input input::-webkit-inner-spin-button,
+.send-amount-input input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.send-amount-input input {
+  appearance: textfield;
+}
+
+.send-quick-amounts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.send-quick-amounts button {
+  padding: 9px 13px;
+  border: 1px solid #f3d5b3;
+  border-radius: 20px;
+  background: #fff8f0;
+  color: #d97716;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ================================
+   NOTE
+================================ */
+
+.send-note-card {
+  margin-top: 15px;
+}
+
+/* ================================
+   REVIEW
+================================ */
+
+.send-review-card {
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #e8e2da;
+  border-radius: 18px;
+}
+
+.send-review-recipient {
+  text-align: center;
+}
+
+.send-contact-avatar.large {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 10px;
+  border-radius: 18px;
+  font-size: 22px;
+}
+
+.send-review-recipient h3 {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.send-review-recipient p {
+  margin-top: 5px;
+  color: #77838d;
+  font-size: 11px;
+}
+
+.send-review-divider {
+  height: 1px;
+  margin: 20px 0;
+  background: #eee9e2;
+}
+
+.send-review-row,
+.send-review-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+
+.send-review-row span,
+.send-review-total span {
+  color: #77838d;
+  font-size: 11px;
+}
+
+.send-review-row strong,
+.send-review-total strong {
+  max-width: 60%;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  text-align: right;
+}
+
+.send-review-total {
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px dashed #e8e2da;
+}
+
+.send-review-total span {
+  color: #172b3a;
+  font-weight: 800;
+}
+
+.send-review-total strong {
+  color: #e77b16;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.send-demo-warning {
+  margin: 16px 0;
+  color: #a16a2b;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ================================
+   PIN
+================================ */
+
+.send-pin-card {
+  padding: 25px 20px;
+  border: 1px solid #e8e2da;
+  border-radius: 18px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.send-pin-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: #fff0df;
+  color: #e77b16;
+}
+
+.send-pin-card h3 {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.send-pin-card p {
+  margin-top: 8px;
+  color: #77838d;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.send-pin-card label {
+  display: block;
+  margin-top: 25px;
+  color: #77838d;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.send-pin-input {
+  display: block;
+  width: 180px;
+  height: 55px;
+  margin: 12px auto;
+  border: 1px solid #e8e2da;
+  border-radius: 12px;
+  outline: none;
+  background: #fdfcfb;
+  color: #172b3a;
+  font-size: 23px;
+  letter-spacing: 12px;
+  text-align: center;
+}
+
+.send-pin-input:focus {
+  border-color: #f28c28;
+}
+
+.send-pin-hint {
+  display: block;
+  margin-top: 10px;
+  color: #77838d;
+  font-size: 10px;
+}
+
+/* ================================
+   PRIMARY BUTTON
+================================ */
+
+.send-primary-button {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 24px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  border-radius: 13px;
+  background: #172b3a;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 5px 14px rgba(23, 43, 58, 0.13);
+  transition: transform 0.2s ease;
+}
+
+.send-primary-button span {
+  color: #ffad55;
+  font-size: 18px;
+}
+
+.send-primary-button:active {
+  transform: scale(0.98);
+}
+
+.send-secondary-button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 10px;
+  border: 1px solid #e8e2da;
+  border-radius: 13px;
+  background: #ffffff;
+  color: #172b3a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ================================
+   ERROR
+================================ */
+
+.send-error {
+  margin-top: 13px;
+  color: #dc4545;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* ================================
+   SUCCESS
+================================ */
+
+.send-success-content {
+  padding-top: 35px;
+  text-align: center;
+}
+
+.send-success-icon {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e8f5ee;
+  color: #16865c;
+  box-shadow: 0 0 0 9px rgba(22, 134, 92, 0.07);
+}
+
+.send-success-icon span {
+  font-size: 42px;
+  font-weight: 800;
+}
+
+.send-success-content h2 {
+  color: #16865c;
+}
+
+.send-success-subtitle {
+  margin-top: 9px;
+  color: #77838d;
+  font-size: 11px;
+}
+
+.send-success-card {
+  margin-top: 27px;
+  padding: 22px 18px;
+  border: 1px solid #e8e2da;
+  border-radius: 18px;
+  background: #ffffff;
+  text-align: left;
+}
+
+.send-success-card > span {
+  display: block;
+  color: #77838d;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.send-success-card h3 {
+  margin-top: 9px;
+  color: #172b3a;
+  font-size: 32px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.send-success-divider {
+  height: 1px;
+  margin: 20px 0;
+  background: #eee9e2;
+}
+
+.send-success-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.send-success-row:last-child {
+  margin-bottom: 0;
+}
+
+.send-success-row span {
+  color: #77838d;
+  font-size: 10px;
+}
+
+.send-success-row strong {
+  max-width: 60%;
+  overflow-wrap: anywhere;
+  color: #172b3a;
+  font-size: 10px;
+  text-align: right;
+}
+
+.send-success-row .send-success-status {
+  color: #16865c;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 360px) {
+  .send-content {
+    padding: 0 16px;
+  }
+
+  .send-header {
+    padding: 18px 16px;
+  }
+
+  .send-progress {
+    padding: 0 16px;
+  }
+
+  .send-amount-input input {
+    width: 145px;
+  }
+}

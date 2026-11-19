@@ -1,0 +1,636 @@
+
+/* =====================================
+   PAYWAVE HOME PAGE
+===================================== */
+
+.home-page {
+  min-height: 100vh;
+  padding: 25px 22px 20px;
+  background: #f7f5f1;
+  color: #172b3a;
+  overflow-x: hidden;
+}
+
+/* =====================================
+   HEADER
+===================================== */
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.home-header h1 {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.home-header h1 span {
+  color: #f28c28;
+}
+
+.home-header p {
+  margin-top: 5px;
+  color: #77838d;
+  font-size: 13px;
+}
+
+.profile-button {
+  width: 43px;
+  height: 43px;
+  border: 0;
+  border-radius: 15px;
+  background: #172b3a;
+  color: #ffad55;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* =====================================
+   COMMON SECTION HEADINGS
+===================================== */
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 19px;
+}
+
+.section-heading h3 {
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: -0.45px;
+}
+
+.section-heading > span {
+  color: #e77b16;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.home-eyebrow {
+  color: #e77b16;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+/* =====================================
+   SEARCH
+===================================== */
+
+.home-search-section {
+  margin-bottom: 30px;
+}
+
+.home-search-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 13px;
+}
+
+.home-search-heading h3 {
+  margin-top: 5px;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.mobile-search-box {
+  min-height: 56px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e8e2da;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 4px 13px rgba(23, 43, 58, 0.035);
+}
+
+.mobile-search-box:focus-within {
+  border-color: #f28c28;
+  box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.10);
+}
+
+.mobile-search-box input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #172b3a;
+  font-size: 12px;
+}
+
+.mobile-search-box input::placeholder {
+  color: #a0a8ad;
+}
+
+.mobile-search-box button {
+  border: 0;
+  background: transparent;
+  color: #77838d;
+  font-size: 23px;
+}
+
+.search-results {
+  margin-top: 8px;
+  padding: 4px 13px;
+  border: 1px solid #e8e2da;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.search-contact {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 0;
+}
+
+.search-contact + .search-contact {
+  border-top: 1px solid #eee8df;
+}
+
+.contact-avatar {
+  width: 37px;
+  height: 37px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff0df;
+  color: #e77b16;
+  font-weight: 800;
+}
+
+.search-contact div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.search-contact strong {
+  font-size: 12px;
+}
+
+.search-contact span {
+  color: #89939a;
+  font-size: 10px;
+}
+
+.no-search-result {
+  padding: 15px 0;
+  color: #89939a;
+  font-size: 11px;
+}
+
+/* =====================================
+   QUICK ACTIONS
+===================================== */
+
+.quick-actions {
+  margin-bottom: 32px;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.action-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  color: #344b5a;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.action-icon {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  transition: transform 0.2s ease;
+}
+
+.action-item:active .action-icon {
+  transform: scale(0.94);
+}
+
+.send-icon {
+  background: #fff0df;
+}
+
+.receive-icon {
+  background: #e3f3eb;
+}
+
+.scan-icon {
+  background: #f0eafb;
+}
+
+.bank-icon {
+  background: #fcebdd;
+}
+
+/* =====================================
+   EVERYDAY PAYMENTS
+===================================== */
+
+.everyday-section {
+  margin-top: 32px;
+}
+
+.everyday-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.everyday-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  background: transparent;
+  color: #344b5a;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.everyday-icon {
+  width: 57px;
+  height: 57px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+}
+
+.everyday-icon svg,
+.feature-icon svg {
+  display: block;
+}
+
+.everyday-icon.orange {
+  background: #fff0df;
+}
+
+.everyday-icon.yellow {
+  background: #fff4d9;
+}
+
+.everyday-icon.purple {
+  background: #f0eafb;
+}
+
+.everyday-icon.blue {
+  background: #e5f0f8;
+}
+
+/* =====================================
+   PAYWAVE FEATURES
+===================================== */
+
+.features-section {
+  margin-top: 34px;
+}
+
+.features-card {
+  padding: 5px 15px;
+  border: 1px solid #eae4dc;
+  border-radius: 19px;
+  background: #ffffff;
+  box-shadow: 0 5px 17px rgba(23, 43, 58, 0.035);
+}
+
+.feature-item {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-item + .feature-item {
+  border-top: 1px solid #eee8df;
+}
+
+.feature-icon {
+  width: 55px;
+  height: 55px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 17px;
+}
+
+.expense-icon {
+  background: #fff0df;
+}
+
+.request-icon {
+  background: #e3f3eb;
+}
+
+.schedule-icon {
+  background: #f0eafb;
+}
+
+.feature-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.feature-info h4 {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.feature-info p {
+  margin-top: 5px;
+  color: #89939a;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.feature-arrow {
+  margin-left: auto;
+  color: #a0a8ad;
+  font-size: 25px;
+}
+
+/* =====================================
+   PAYWAVE SPOTLIGHT
+===================================== */
+
+.spotlight-section {
+  margin-top: 32px;
+}
+
+.spotlight-card {
+  position: relative;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 20px;
+  background: #172b3a;
+}
+
+.spotlight-content {
+  position: relative;
+  z-index: 1;
+  max-width: 235px;
+}
+
+.spotlight-content > span {
+  color: #ffad55;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.spotlight-content h3 {
+  margin-top: 12px;
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.spotlight-content p {
+  margin-top: 8px;
+  color: #c3cbd0;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.spotlight-symbol {
+  flex-shrink: 0;
+  width: 57px;
+  height: 57px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #304654;
+}
+
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  right: -60px;
+  bottom: -80px;
+  border: 1px solid rgba(255, 173, 85, 0.3);
+  border-radius: 50%;
+  box-shadow: 0 0 0 16px rgba(255, 173, 85, 0.04);
+}
+
+/* =====================================
+   YOUR CONTACTS - 10 CONTACTS
+===================================== */
+
+.people-section {
+  margin-top: 34px;
+  margin-bottom: 28px;
+}
+
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 5px;
+  row-gap: 20px;
+  padding: 5px 0 12px;
+}
+
+.people-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: #536574;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.people-avatar {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.people-avatar-0,
+.people-avatar-5 {
+  background: #fff0df;
+  color: #e77b16;
+}
+
+.people-avatar-1,
+.people-avatar-6 {
+  background: #e3f3eb;
+  color: #16865c;
+}
+
+.people-avatar-2,
+.people-avatar-7 {
+  background: #f0eafb;
+  color: #7955b5;
+}
+
+.people-avatar-3,
+.people-avatar-8 {
+  background: #e5f0f8;
+  color: #397da8;
+}
+
+.people-avatar-4,
+.people-avatar-9 {
+  background: #fcebdd;
+  color: #c16b2b;
+}
+
+/* =====================================
+   DISCLAIMER
+===================================== */
+
+.demo-disclaimer {
+  margin: 22px 0;
+  color: #99a2a8;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* =====================================
+   BOTTOM NAVIGATION
+   Part of the same continuous page
+===================================== */
+
+.bottom-navigation {
+  position: relative;
+  width: calc(100% + 44px);
+  max-width: none;
+  min-height: 75px;
+  margin: 20px -22px 0;
+  padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  background: #f7f5f1;
+  border-top: none;
+  box-shadow: none;
+  transform: none;
+  left: auto;
+  bottom: auto;
+  z-index: auto;
+}
+
+.nav-item {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  color: #a0aab1;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  color: #e77b16;
+}
+
+.nav-item:active {
+  transform: scale(0.96);
+}
+
+/* =====================================
+   RESPONSIVE DESIGN
+===================================== */
+
+@media (max-width: 360px) {
+  .home-page {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .action-grid,
+  .everyday-grid {
+    gap: 4px;
+  }
+
+  .action-icon {
+    width: 55px;
+    height: 55px;
+  }
+
+  .everyday-icon {
+    width: 51px;
+    height: 51px;
+  }
+
+  .action-item,
+  .everyday-item {
+    font-size: 9px;
+  }
+
+  .feature-item {
+    gap: 9px;
+  }
+
+  .feature-info h4 {
+    font-size: 11px;
+  }
+
+  .spotlight-card {
+    padding: 16px;
+  }
+
+  .people-grid {
+    column-gap: 2px;
+  }
+
+  .people-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .people-item {
+    font-size: 9px;
+  }
+}

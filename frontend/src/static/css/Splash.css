@@ -1,0 +1,300 @@
+
+.splash-page {
+  min-height: 100vh;
+  background: #f7f5f1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.splash-top {
+  position: relative;
+  min-height: 420px;
+  padding: 30px 25px 0;
+  background: #172b3a;
+  border-radius: 0 0 34px 34px;
+  overflow: hidden;
+}
+
+.splash-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  position: relative;
+  z-index: 2;
+}
+
+.splash-logo {
+  width: 39px;
+  height: 39px;
+  background: #f28c28;
+  color: #172b3a;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.splash-brand h1 {
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.splash-brand h1 span {
+  color: #f28c28;
+}
+
+.splash-illustration {
+  position: relative;
+  height: 335px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.splash-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.splash-circle-one {
+  width: 285px;
+  height: 285px;
+}
+
+.splash-circle-two {
+  width: 225px;
+  height: 225px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.splash-card {
+  position: relative;
+  z-index: 1;
+  width: 265px;
+  height: 170px;
+  padding: 20px;
+  border-radius: 19px;
+  background: linear-gradient(135deg, #f28c28, #ffad55);
+  color: #172b3a;
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.25);
+  transform: rotate(-6deg);
+}
+
+.splash-card-top,
+.splash-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.splash-card-chip {
+  font-size: 22px;
+}
+
+.splash-card-dots {
+  font-size: 17px;
+  letter-spacing: 3px;
+}
+
+.splash-card-label {
+  margin-top: 17px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  opacity: 0.75;
+}
+
+.splash-card-amount {
+  margin-top: 4px;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.splash-card-bottom {
+  margin-top: 17px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.splash-card-mark {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.splash-float {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 13px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.16);
+}
+
+.splash-float > span {
+  width: 31px;
+  height: 31px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: #fff0df;
+  color: #e77b16;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.splash-float div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.splash-float strong {
+  color: #172b3a;
+  font-size: 10px;
+}
+
+.splash-float small {
+  color: #77838d;
+  font-size: 8px;
+}
+
+.splash-float-send {
+  top: 65px;
+  right: 0;
+}
+
+.splash-float-receive {
+  bottom: 48px;
+  left: 0;
+}
+
+.splash-content {
+  flex: 1;
+  padding: 30px 26px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.splash-eyebrow {
+  color: #e77b16;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.splash-content h2 {
+  margin-top: 13px;
+  color: #172b3a;
+  font-size: 37px;
+  line-height: 1.13;
+  letter-spacing: -1.8px;
+  font-weight: 800;
+}
+
+.splash-content h2 span {
+  color: #f28c28;
+}
+
+.splash-content > p:not(.splash-disclaimer) {
+  max-width: 290px;
+  margin-top: 13px;
+  color: #77838d;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.splash-primary-btn {
+  width: 100%;
+  height: 54px;
+  margin-top: 25px;
+  border: none;
+  border-radius: 13px;
+  background: #172b3a;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.splash-primary-btn span {
+  color: #ffad55;
+  font-size: 20px;
+}
+
+.splash-primary-btn:active {
+  transform: scale(0.98);
+}
+
+.splash-login-btn {
+  margin-top: 19px;
+  border: none;
+  background: transparent;
+  color: #77838d;
+  font-size: 12px;
+}
+
+.splash-login-btn strong {
+  color: #e77b16;
+  margin-left: 3px;
+}
+
+.splash-footer {
+  margin-top: auto;
+  padding-top: 27px;
+  color: #77838d;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.splash-footer span {
+  color: #f28c28;
+  font-size: 12px;
+}
+
+.splash-disclaimer {
+  margin-top: 9px;
+  color: #a0a7ac;
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+@media (max-width: 360px) {
+  .splash-top {
+    min-height: 385px;
+  }
+
+  .splash-illustration {
+    height: 300px;
+  }
+
+  .splash-card {
+    width: 245px;
+  }
+
+  .splash-content {
+    padding-left: 21px;
+    padding-right: 21px;
+  }
+
+  .splash-content h2 {
+    font-size: 33px;
+  }
+}
