@@ -5,12 +5,17 @@ import com.paywave.dto.LoginResponse;
 import com.paywave.dto.UserRequest;
 import com.paywave.dto.UserResponse;
 import com.paywave.entity.User;
+import com.paywave.entity.Wallet;
 import com.paywave.exception.EmailAlreadyExistsException;
 import com.paywave.exception.InvalidCredentialsException;
 import com.paywave.repository.UserRepository;
+import com.paywave.repository.WalletRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -18,10 +23,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    public UserService (UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService){
+    private final WalletRepository walletRepository;
+    public UserService (UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, WalletRepository walletRepository){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.walletRepository = walletRepository;
     }
 
     public boolean isEmailRegistered(String email){
@@ -36,6 +43,7 @@ public class UserService {
         return passwordEncoder.encode(rawPassword);
     }
 
+    @Transactional
     public UserResponse registerUser(UserRequest request){
         if(isEmailRegistered(request.getEmail())){
             throw new EmailAlreadyExistsException("Email already registered");
@@ -57,6 +65,13 @@ public class UserService {
         user.setMpin_hash(hashedmpin);
 
         User savedUser = userRepository.save(user);
+
+        Wallet wallet = new Wallet();
+        wallet.setUser(savedUser);
+        wallet.setBalance(BigDecimal.ZERO);
+        wallet.setCurrency("INR");
+        wallet.setCreated_at(LocalDateTime.now());
+        walletRepository.save(wallet);
 
         UserResponse response = new UserResponse();
         response.setUserId(savedUser.getId());
