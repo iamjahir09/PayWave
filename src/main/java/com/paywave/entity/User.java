@@ -38,6 +38,9 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Wallet wallet;
+
+    @Column(name = "paywave_id", unique = true)
+    private String paywaveId;
     public String getMpin_hash() {
         return mpin_hash;
     }
@@ -84,5 +87,21 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public String getPaywaveId() {
+        return paywaveId;
+    }
+
+    public void setPaywaveId(String paywaveId) {
+        this.paywaveId = paywaveId;
     }
 }

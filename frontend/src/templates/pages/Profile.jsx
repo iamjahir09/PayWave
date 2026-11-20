@@ -229,10 +229,6 @@ function Profile({ user, onBack, onLogout }) {
           <span>Logout</span>
         </button>
 
-        <p className="profile-version">
-          PAYWAVE · DEMO VERSION 1.0
-        </p>
-
         {/* QR Wallet - At the Bottom */}
         <section
           ref={walletRef}
@@ -293,7 +289,6 @@ function Profile({ user, onBack, onLogout }) {
               </p>
 
               <span className="profile-qr-demo-label">
-                DEMO QR · NOT FOR REAL PAYMENTS
               </span>
 
               <button
@@ -320,12 +315,6 @@ function Profile({ user, onBack, onLogout }) {
               </div>
             </div>
           </div>
-
-          <p className="profile-qr-note">
-            This is a temporary visual preview and cannot be
-            scanned for real payments. A unique, scannable QR
-            will be generated after backend integration.
-          </p>
         </section>
       </main>
     </div>

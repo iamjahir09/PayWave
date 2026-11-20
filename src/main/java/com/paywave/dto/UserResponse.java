@@ -5,6 +5,7 @@ public class UserResponse {
     private String name;
     private String email;
     private String message;
+    private String paywaveId;
 
     public Long getUserId() {
         return userId;
@@ -36,5 +37,13 @@ public class UserResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getPaywaveId() {
+        return paywaveId;
+    }
+
+    public void setPaywaveId(String paywaveId) {
+        this.paywaveId = paywaveId;
     }
 }
