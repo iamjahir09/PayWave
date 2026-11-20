@@ -1,6 +1,8 @@
+
 package com.paywave.security;
 
 import com.paywave.service.JwtService;
+import com.paywave.service.TokenRevocationService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,13 +14,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final TokenRevocationService tokenRevocationService;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(
+            JwtService jwtService,
+            TokenRevocationService tokenRevocationService) {
+
         this.jwtService = jwtService;
+        this.tokenRevocationService = tokenRevocationService;
     }
 
     @Override
@@ -38,18 +47,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
 
         try {
+            // 1. Validate JWT and extract user ID
             Long userId = jwtService.extractUserId(token);
 
+            // 2. Check whether token is revoked
+            if (tokenRevocationService.isTokenRevoked(token)) {
+
+                SecurityContextHolder.clearContext();
+
+                response.sendError(
+                        HttpServletResponse.SC_UNAUTHORIZED,
+                        "Token has been revoked. Please login again."
+                );
+
+                return;
+            }
+
+            // 3. Set authentication
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             userId,
                             null,
-                            java.util.Collections.emptyList()
+                            Collections.emptyList()
                     );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext()
+                    .setAuthentication(authentication);
 
         } catch (JwtException | IllegalArgumentException ex) {
+
             SecurityContextHolder.clearContext();
         }
 
