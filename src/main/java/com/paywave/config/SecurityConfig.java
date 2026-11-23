@@ -5,6 +5,8 @@ import com.paywave.security.JwtAuthenticationFilter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,9 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CorsConfigurationSource corsConfigurationSource;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            CorsConfigurationSource corsConfigurationSource) {
+
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @Bean
@@ -32,6 +39,9 @@ public class SecurityConfig {
             throws Exception {
 
         http
+                // Enable CORS inside Spring Security
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+
                 .csrf(csrf -> csrf.disable())
 
                 .formLogin(form -> form.disable())
@@ -46,6 +56,9 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // Allow browser CORS preflight requests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         // Public endpoints
                         .requestMatchers(
                                 "/api/auth/**",
@@ -54,7 +67,7 @@ public class SecurityConfig {
                                 "/actuator/health/**"
                         ).permitAll()
 
-                        // All other endpoints require JWT authentication
+                        // All remaining endpoints require JWT
                         .anyRequest().authenticated()
                 )
 

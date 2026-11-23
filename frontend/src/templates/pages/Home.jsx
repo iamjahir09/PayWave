@@ -102,6 +102,7 @@ function Home({
   };
 
   // Transaction information
+
   const getTransactionDetails = (transaction) => {
     const type = String(transaction.type || "").toUpperCase();
 
@@ -111,14 +112,15 @@ function Home({
     const name = isAddMoney
         ? "Wallet Top-up"
         : isSent
-            ? transaction.receiverName || "Unknown receiver"
-            : transaction.senderName || "Unknown sender";
+            ? transaction.receiver || "Unknown receiver"
+            : transaction.sender || "Unknown sender";
 
     return {
       name,
       isCredit: isAddMoney || type === "RECEIVE",
     };
   };
+
 
   const recentTransactions = [...transactions]
       .sort(

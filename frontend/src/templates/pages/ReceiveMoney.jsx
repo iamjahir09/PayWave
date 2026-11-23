@@ -1,14 +1,19 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
+
+import {
+    getMyQr,
+} from "../services/paywaveApi";
+
 import "../../static/css/ReceiveMoney.css";
 import PayWaveIcon from "../../templates/components/PayWaveIcon";
-
 
 function BackIcon() {
     return (
         <svg width="22" height="22" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" strokeWidth="2"
-            strokeLinecap="round" strokeLinejoin="round">
+             fill="none" stroke="currentColor" strokeWidth="2"
+             strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5" />
             <path d="m12 19-7-7 7-7" />
         </svg>
@@ -18,8 +23,8 @@ function BackIcon() {
 function CopyIcon() {
     return (
         <svg width="19" height="19" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" strokeWidth="1.8"
-            strokeLinecap="round" strokeLinejoin="round">
+             fill="none" stroke="currentColor" strokeWidth="1.8"
+             strokeLinecap="round" strokeLinejoin="round">
             <rect x="8" y="8" width="13" height="13" rx="2" />
             <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" />
         </svg>
@@ -29,8 +34,8 @@ function CopyIcon() {
 function ShareIcon() {
     return (
         <svg width="21" height="21" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" strokeWidth="1.8"
-            strokeLinecap="round" strokeLinejoin="round">
+             fill="none" stroke="currentColor" strokeWidth="1.8"
+             strokeLinecap="round" strokeLinejoin="round">
             <circle cx="18" cy="5" r="3" />
             <circle cx="6" cy="12" r="3" />
             <circle cx="18" cy="19" r="3" />
@@ -41,17 +46,58 @@ function ShareIcon() {
 }
 
 function ReceiveMoney({ user, onBack }) {
+    const [qrData, setQrData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const [copied, setCopied] = useState(false);
 
-    const displayName = user?.name || "PayWave User";
-    const payWaveId = "jahir@paywave";
-    const mobileNumber = user?.mobileNumber || "9876543210";
+    const displayName = qrData?.name || user?.name || "PayWave User";
+    const payWaveId = qrData?.paywaveId || "";
+    const qrPayload = qrData?.qrPayload || "";
+    const mobileNumber = user?.mobileNumber || "Not available";
+
+    useEffect(() => {
+        let mounted = true;
+
+        const loadQr = async () => {
+            setLoading(true);
+            setError("");
+
+            try {
+                const response = await getMyQr();
+
+                if (mounted) {
+                    setQrData(response.data);
+                }
+            } catch (err) {
+                if (mounted) {
+                    setError(
+                        err?.response?.data?.message ||
+                        err?.response?.data?.error ||
+                        "Unable to load your QR code. Please try again."
+                    );
+                }
+            } finally {
+                if (mounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        loadQr();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
 
     const handleCopy = async () => {
+        if (!payWaveId) return;
+
         try {
             await navigator.clipboard.writeText(payWaveId);
             setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
+            window.setTimeout(() => setCopied(false), 2000);
         } catch {
             alert("Unable to copy. Please copy your PayWave ID manually.");
         }
@@ -59,7 +105,10 @@ function ReceiveMoney({ user, onBack }) {
 
     const handleShare = async () => {
         const shareText =
-            `Pay me using PayWave!\nName: ${displayName}\nPayWave ID: ${payWaveId}\nMobile: ${mobileNumber}`;
+            `Pay me using PayWave!\n` +
+            `Name: ${displayName}\n` +
+            `PayWave ID: ${payWaveId}\n` +
+            `Mobile: ${mobileNumber}`;
 
         if (navigator.share) {
             try {
@@ -67,9 +116,9 @@ function ReceiveMoney({ user, onBack }) {
                     title: "My PayWave Details",
                     text: shareText,
                 });
-            } catch (error) {
-                if (error.name !== "AbortError") {
-                    console.error("Sharing failed:", error);
+            } catch (err) {
+                if (err.name !== "AbortError") {
+                    console.error("Sharing failed:", err);
                 }
             }
         } else {
@@ -93,7 +142,7 @@ function ReceiveMoney({ user, onBack }) {
                     onClick={onBack}
                     aria-label="Go back"
                 >
-                    <BackIcon/>
+                    <BackIcon />
                 </button>
 
                 <div>
@@ -109,6 +158,7 @@ function ReceiveMoney({ user, onBack }) {
                 </div>
 
                 <h1>Get paid, effortlessly.</h1>
+
                 <p>
                     Let your friends scan your QR code or use your
                     PayWave ID to send you money.
@@ -117,6 +167,7 @@ function ReceiveMoney({ user, onBack }) {
 
             {/* QR Card */}
             <section className="receive-qr-card">
+
                 <div className="receive-user-info">
                     <div className="receive-avatar">
                         {displayName.charAt(0).toUpperCase()}
@@ -128,43 +179,29 @@ function ReceiveMoney({ user, onBack }) {
                     </div>
 
                     <span className="receive-verified">
-                        <PayWaveIcon name="security" size={15} />
-                    </span>
+            <PayWaveIcon name="security" size={15} />
+          </span>
                 </div>
 
                 <div className="receive-qr-container">
-                    <div className="receive-qr-pattern" aria-hidden="true">
-                        {Array.from({ length: 121 }, (_, index) => {
-                            const row = Math.floor(index / 11);
-                            const col = index % 11;
-
-                            const inFinder = (r, c, startR, startC) =>
-                                r >= startR &&
-                                r < startR + 3 &&
-                                c >= startC &&
-                                c < startC + 3;
-
-                            const finder =
-                                inFinder(row, col, 0, 0) ||
-                                inFinder(row, col, 0, 8) ||
-                                inFinder(row, col, 8, 0);
-
-                            const filled = finder
-                                ? (
-                                    (row % 3 === 0) ||
-                                    (col % 3 === 0) ||
-                                    (row % 3 === 1 && col % 3 === 1)
-                                )
-                                : ((row * 7 + col * 11 + row * col) % 5 < 2);
-
-                            return (
-                                <span
-                                    key={index}
-                                    className={filled ? "qr-dark" : "qr-light"}
-                                />
-                            );
-                        })}
-                    </div>
+                    {loading ? (
+                        <p>Generating your QR code...</p>
+                    ) : error ? (
+                        <p className="receive-error">{error}</p>
+                    ) : qrPayload ? (
+                        <QRCodeSVG
+                            value={qrPayload}
+                            size={220}
+                            level="H"
+                            includeMargin={true}
+                            bgColor="#FFFFFF"
+                            fgColor="#111111"
+                        />
+                    ) : (
+                        <p className="receive-error">
+                            QR code data is unavailable.
+                        </p>
+                    )}
                 </div>
 
                 <p className="receive-qr-caption">
@@ -179,16 +216,17 @@ function ReceiveMoney({ user, onBack }) {
 
                 <div className="receive-id-box">
                     <div>
-                        <small>UPI ID</small>
-                        <strong>{payWaveId}</strong>
+                        <small>PayWave ID</small>
+                        <strong>{payWaveId || "Unavailable"}</strong>
                     </div>
 
                     <button
                         type="button"
                         onClick={handleCopy}
+                        disabled={!payWaveId}
                         aria-label="Copy PayWave ID"
                     >
-                        <CopyIcon/>
+                        <CopyIcon />
                     </button>
                 </div>
 
@@ -197,6 +235,7 @@ function ReceiveMoney({ user, onBack }) {
                         PayWave ID copied successfully!
                     </p>
                 )}
+
             </section>
 
             {/* Share Details */}
@@ -205,8 +244,9 @@ function ReceiveMoney({ user, onBack }) {
                     className="receive-share-button"
                     type="button"
                     onClick={handleShare}
+                    disabled={!payWaveId}
                 >
-                    <ShareIcon/>
+                    <ShareIcon />
                     Share Payment Details
                 </button>
 
@@ -231,7 +271,7 @@ function ReceiveMoney({ user, onBack }) {
 
                 <div className="receive-detail-row">
                     <span>PayWave ID</span>
-                    <strong>{payWaveId}</strong>
+                    <strong>{payWaveId || "Unavailable"}</strong>
                 </div>
             </section>
 

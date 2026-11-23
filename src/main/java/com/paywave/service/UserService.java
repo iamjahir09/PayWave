@@ -320,4 +320,40 @@ public class UserService {
                 qrPayload
         );
     }
+
+    public PayWaveRecipientResponse getRecipientByPaywaveId(String paywaveId) {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null
+                || !(authentication.getPrincipal() instanceof Long)) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "User is not authenticated"
+            );
+        }
+
+        if (paywaveId == null || paywaveId.trim().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "PayWave ID is required"
+            );
+        }
+
+        User recipient = userRepository
+                .findByPaywaveId(paywaveId.trim())
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "PayWave user not found"
+                        )
+                );
+
+        return new PayWaveRecipientResponse(
+                recipient.getName(),
+                recipient.getPaywaveId()
+        );
+    }
 }

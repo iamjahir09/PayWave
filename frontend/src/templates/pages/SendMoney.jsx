@@ -86,7 +86,7 @@ function SendMoney({ onBack }) {
   };
 
   const handlePayment = () => {
-    if (pin.length !== 4) {
+    if (pin.length !== 6) {
       setError("Enter a 4-digit demo PIN.");
       return;
     }
@@ -428,7 +428,7 @@ function SendMoney({ onBack }) {
               className="send-pin-input"
               type="password"
               inputMode="numeric"
-              maxLength={4}
+              maxLength={6}
               placeholder="••••"
               value={pin}
               onChange={(event) => {

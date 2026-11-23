@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { payBill } from "../services/paywaveApi";
 import "../../static/css/ServicePayment.css";
 
 const serviceConfig = {
@@ -8,211 +9,541 @@ const serviceConfig = {
     field: "Mobile Number",
     placeholder: "Enter 10-digit mobile number",
     inputMode: "numeric",
+    billType: "MOBILE_RECHARGE",
+    needsOperator: true,
   },
+
   Electricity: {
     subtitle: "Pay your electricity bill",
     field: "Consumer Number",
     placeholder: "Enter consumer number",
     inputMode: "text",
+    billType: "ELECTRICITY",
+    needsOperator: false,
   },
+
   "DTH Recharge": {
     subtitle: "Recharge your DTH connection",
     field: "Customer ID",
     placeholder: "Enter DTH customer ID",
     inputMode: "text",
+    billType: "DTH_RECHARGE",
+    needsOperator: true,
   },
+
   "Water Bill": {
     subtitle: "Pay your water bill",
     field: "Connection Number",
     placeholder: "Enter connection number",
     inputMode: "text",
+    billType: "WATER",
+    needsOperator: false,
   },
 };
 
-function ServicePayment({ service = "Mobile Recharge", onBack }) {
-  const config = serviceConfig[service] || serviceConfig["Mobile Recharge"];
+function ServicePayment({
+                          service = "Mobile Recharge",
+                          onBack,
+                        }) {
+  const config =
+      serviceConfig[service] || serviceConfig["Mobile Recharge"];
 
   const [customerId, setCustomerId] = useState("");
   const [amount, setAmount] = useState("");
   const [operator, setOperator] = useState("");
+  const [provider, setProvider] = useState("");
+
+  const [mpin, setMpin] = useState("");
+  const [showMpin, setShowMpin] = useState(false);
+
   const [step, setStep] = useState("form");
   const [message, setMessage] = useState("");
+  const [processing, setProcessing] = useState(false);
+  const [paymentResult, setPaymentResult] = useState(null);
 
+  // Validate payment details
   const handleContinue = (event) => {
     event.preventDefault();
+    setMessage("");
 
     if (!customerId.trim()) {
-      setMessage(`Please enter your ${config.field.toLowerCase()}.`);
+      setMessage(
+          `Please enter your ${config.field.toLowerCase()}.`
+      );
       return;
     }
 
     if (
-      service === "Mobile Recharge" &&
-      !/^[0-9]{10}$/.test(customerId)
+        service === "Mobile Recharge" &&
+        !/^[0-9]{10}$/.test(customerId.trim())
     ) {
       setMessage("Please enter a valid 10-digit mobile number.");
       return;
     }
 
-    if (!amount || Number(amount) <= 0) {
-      setMessage("Please enter a valid amount.");
+    const amountValue = Number(amount);
+
+    if (
+        !Number.isFinite(amountValue) ||
+        amountValue < 1 ||
+        amountValue > 100000 ||
+        !/^\d+(\.\d{1,2})?$/.test(amount)
+    ) {
+      setMessage(
+          "Please enter a valid amount between ₹1 and ₹1,00,000."
+      );
       return;
     }
 
-    if (service === "Mobile Recharge" || service === "DTH Recharge") {
-      if (!operator) {
-        setMessage("Please select an operator.");
-        return;
-      }
+    if (config.needsOperator && !operator) {
+      setMessage("Please select an operator.");
+      return;
     }
 
-    setMessage("");
+    if (!config.needsOperator && !provider.trim()) {
+      setMessage("Please enter your service provider.");
+      return;
+    }
+
+    setMpin("");
+    setShowMpin(false);
     setStep("review");
   };
 
-  const handleConfirm = () => {
-    setStep("success");
+  // Confirm payment with backend MPIN verification
+  const handleConfirm = async () => {
+    if (processing) return;
+
+    setMessage("");
+
+    if (!/^[0-9]{6}$/.test(mpin)) {
+      setMessage("Please enter your valid 6-digit PayWave MPIN.");
+      return;
+    }
+
+    setProcessing(true);
+
+    const selectedProvider = config.needsOperator
+        ? operator
+        : provider.trim();
+
+    const payload = {
+      billType: config.billType,
+      customerReference: customerId.trim(),
+      provider: selectedProvider,
+      amount: Number(amount),
+      mpin: mpin,
+    };
+
+    try {
+      const response = await payBill(payload);
+
+      setPaymentResult(response.data);
+      setMpin("");
+      setShowMpin(false);
+      setStep("success");
+
+    } catch (error) {
+      console.error("Bill payment failed:", error);
+
+      const errorData = error.response?.data;
+
+      setMessage(
+          errorData?.message ||
+          errorData?.error ||
+          (error.response?.status === 401
+              ? "Your session has expired. Please log in again."
+              : "Payment failed. Please check your details and try again.")
+      );
+
+    } finally {
+      setProcessing(false);
+    }
   };
 
+  // Reset payment form
   const handleReset = () => {
     setCustomerId("");
     setAmount("");
     setOperator("");
+    setProvider("");
+
+    setMpin("");
+    setShowMpin(false);
+
     setMessage("");
+    setPaymentResult(null);
+    setProcessing(false);
     setStep("form");
   };
 
+  const reference =
+      paymentResult?.reference ||
+      paymentResult?.paymentReference ||
+      paymentResult?.transactionReference ||
+      "Generated by PayWave";
+
+  const paymentStatus =
+      paymentResult?.status ||
+      paymentResult?.paymentStatus ||
+      "SUCCESS";
+
   return (
-    <main className="service-page">
-      <header className="service-header">
-        <button className="service-back" onClick={onBack}>←</button>
-        <div>
-          <h2>{service}</h2>
-          <p>{config.subtitle}</p>
-        </div>
-      </header>
+      <main className="service-page">
 
-      {step === "form" && (
-        <>
-          <section className="service-banner">
-            <span className="service-banner-icon">₹</span>
-            <h1>Pay with PayWave</h1>
-            <p>Simple, quick and convenient demo payments.</p>
-          </section>
+        {/* HEADER */}
+        <header className="service-header">
+          <button
+              type="button"
+              className="service-back"
+              onClick={onBack}
+              disabled={processing}
+              aria-label="Go back"
+          >
+            ←
+          </button>
 
-          <form className="service-form" onSubmit={handleContinue}>
-            <label>{config.field}</label>
-            <input
-              value={customerId}
-              onChange={(e) => setCustomerId(e.target.value)}
-              placeholder={config.placeholder}
-              inputMode={config.inputMode}
-              maxLength={service === "Mobile Recharge" ? 10 : 40}
-            />
+          <div>
+            <h2>{service}</h2>
+            <p>{config.subtitle}</p>
+          </div>
+        </header>
 
-            {(service === "Mobile Recharge" || service === "DTH Recharge") && (
-              <>
-                <label>Operator</label>
-                <select
-                  value={operator}
-                  onChange={(e) => setOperator(e.target.value)}
-                >
-                  <option value="">Select operator</option>
-                  <option value="Airtel">Airtel</option>
-                  <option value="Jio">Jio</option>
-                  <option value="Vi">Vi</option>
-                  <option value="BSNL">BSNL</option>
-                  {service === "DTH Recharge" && (
+        {/* PAYMENT FORM */}
+        {step === "form" && (
+            <>
+              <section className="service-banner">
+                <span className="service-banner-icon">₹</span>
+
+                <h1>Pay with PayWave</h1>
+
+                <p>
+                  Simple, quick and convenient demo payments.
+                </p>
+              </section>
+
+              <form
+                  className="service-form"
+                  onSubmit={handleContinue}
+              >
+                <label htmlFor="service-customer">
+                  {config.field}
+                </label>
+
+                <input
+                    id="service-customer"
+                    type="text"
+                    value={customerId}
+                    onChange={(event) =>
+                        setCustomerId(event.target.value)
+                    }
+                    placeholder={config.placeholder}
+                    inputMode={config.inputMode}
+                    maxLength={
+                      service === "Mobile Recharge" ? 10 : 40
+                    }
+                />
+
+                {/* OPERATOR */}
+                {config.needsOperator && (
                     <>
-                      <option value="Tata Play">Tata Play</option>
-                      <option value="Dish TV">Dish TV</option>
-                      <option value="Sun Direct">Sun Direct</option>
+                      <label htmlFor="service-operator">
+                        Operator
+                      </label>
+
+                      <select
+                          id="service-operator"
+                          value={operator}
+                          onChange={(event) =>
+                              setOperator(event.target.value)
+                          }
+                      >
+                        <option value="">Select operator</option>
+
+                        {service === "Mobile Recharge" ? (
+                            <>
+                              <option value="Airtel">Airtel</option>
+                              <option value="Jio">Jio</option>
+                              <option value="Vi">Vi</option>
+                              <option value="BSNL">BSNL</option>
+                            </>
+                        ) : (
+                            <>
+                              <option value="Tata Play">Tata Play</option>
+                              <option value="Dish TV">Dish TV</option>
+                              <option value="Sun Direct">Sun Direct</option>
+                              <option value="Airtel Digital TV">
+                                Airtel Digital TV
+                              </option>
+                            </>
+                        )}
+                      </select>
                     </>
-                  )}
-                </select>
-              </>
-            )}
+                )}
 
-            <label>Amount (₹)</label>
-            <input
-              type="number"
-              min="1"
-              max="100000"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Enter amount"
-            />
+                {/* ELECTRICITY / WATER PROVIDER */}
+                {!config.needsOperator && (
+                    <>
+                      <label htmlFor="service-provider">
+                        Service Provider
+                      </label>
 
-            <div className="service-quick-amounts">
-              {[100, 199, 299, 499].map((value) => (
+                      <input
+                          id="service-provider"
+                          type="text"
+                          value={provider}
+                          onChange={(event) =>
+                              setProvider(event.target.value)
+                          }
+                          placeholder="Enter provider name"
+                          maxLength={100}
+                      />
+                    </>
+                )}
+
+                {/* AMOUNT */}
+                <label htmlFor="service-amount">
+                  Amount (₹)
+                </label>
+
+                <input
+                    id="service-amount"
+                    type="number"
+                    min="1"
+                    max="100000"
+                    step="0.01"
+                    value={amount}
+                    onChange={(event) =>
+                        setAmount(event.target.value)
+                    }
+                    placeholder="Enter amount"
+                />
+
+                <div className="service-quick-amounts">
+                  {[100, 199, 299, 499].map((value) => (
+                      <button
+                          type="button"
+                          key={value}
+                          onClick={() => setAmount(String(value))}
+                      >
+                        ₹{value}
+                      </button>
+                  ))}
+                </div>
+
+                {message && (
+                    <p className="service-error" role="alert">
+                      {message}
+                    </p>
+                )}
+
                 <button
-                  type="button"
-                  key={value}
-                  onClick={() => setAmount(String(value))}
+                    className="service-primary"
+                    type="submit"
                 >
-                  ₹{value}
+                  Continue
                 </button>
-              ))}
-            </div>
+              </form>
+            </>
+        )}
 
-            {message && <p className="service-error">{message}</p>}
+        {/* PAYMENT REVIEW */}
+        {step === "review" && (
+            <section className="service-result">
+              <div className="service-result-icon">₹</div>
 
-            <button className="service-primary" type="submit">
-              Continue
-            </button>
-          </form>
-        </>
-      )}
+              <h2>Review Payment</h2>
 
-      {step === "review" && (
-        <section className="service-result">
-          <div className="service-result-icon">₹</div>
-          <h2>Review Payment</h2>
-          <p>Check the details before continuing.</p>
+              <p>
+                Check the details before continuing.
+              </p>
 
-          <div className="service-summary">
-            <div><span>Service</span><strong>{service}</strong></div>
-            <div><span>{config.field}</span><strong>{customerId}</strong></div>
-            {operator && <div><span>Operator</span><strong>{operator}</strong></div>}
-            <div><span>Amount</span><strong>₹{Number(amount).toLocaleString("en-IN")}</strong></div>
-            <div><span>Payment mode</span><strong>PayWave Demo</strong></div>
-          </div>
+              <div className="service-summary">
+                <div>
+                  <span>Service</span>
+                  <strong>{service}</strong>
+                </div>
 
-          <button className="service-primary" onClick={handleConfirm}>
-            Confirm Demo Payment
-          </button>
-          <button className="service-secondary" onClick={() => setStep("form")}>
-            Edit Details
-          </button>
-        </section>
-      )}
+                <div>
+                  <span>{config.field}</span>
+                  <strong>{customerId}</strong>
+                </div>
 
-      {step === "success" && (
-        <section className="service-result">
-          <div className="service-success-icon">✓</div>
-          <h2>Demo Payment Successful!</h2>
-          <p>Your simulated payment flow is complete.</p>
+                <div>
+                  <span>Provider</span>
+                  <strong>
+                    {config.needsOperator ? operator : provider}
+                  </strong>
+                </div>
 
-          <div className="service-summary">
-            <div><span>Service</span><strong>{service}</strong></div>
-            <div><span>Reference</span><strong>PW-DEMO-{Date.now().toString().slice(-6)}</strong></div>
-            <div><span>Amount</span><strong>₹{Number(amount).toLocaleString("en-IN")}</strong></div>
-            <div><span>Status</span><strong className="service-status">Demo Success</strong></div>
-          </div>
+                <div>
+                  <span>Amount</span>
+                  <strong>
+                    ₹{Number(amount).toLocaleString("en-IN")}
+                  </strong>
+                </div>
 
-          <button className="service-primary" onClick={handleReset}>
-            Make Another Payment
-          </button>
-          <button className="service-secondary" onClick={onBack}>
-            Back to Home
-          </button>
-        </section>
-      )}
+                <div>
+                  <span>Payment mode</span>
+                  <strong>PayWave Wallet</strong>
+                </div>
+              </div>
 
-      <p className="service-disclaimer">
-        Educational simulation only. No actual recharge, bill payment or money transfer occurs.
-      </p>
-    </main>
+              {/* MPIN AUTHENTICATION */}
+              <div className="service-mpin-section">
+                <div className="service-mpin-heading">
+                  <div>
+                    <h3>Enter PayWave MPIN</h3>
+                    <p>
+                      Enter your 6-digit MPIN to authorize payment.
+                    </p>
+                  </div>
+
+                  <span className="service-lock-icon">🔒</span>
+                </div>
+
+                <div className="service-mpin-input-wrapper">
+                  <input
+                      id="service-mpin"
+                      type={showMpin ? "text" : "password"}
+                      inputMode="numeric"
+                      autoComplete="off"
+                      maxLength={6}
+                      placeholder="Enter 6-digit MPIN"
+                      value={mpin}
+                      disabled={processing}
+                      onChange={(event) => {
+                        const value = event.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 6);
+
+                        setMpin(value);
+                        setMessage("");
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          event.preventDefault();
+                          handleConfirm();
+                        }
+                      }}
+                  />
+
+                  <button
+                      type="button"
+                      className="service-mpin-toggle"
+                      onClick={() =>
+                          setShowMpin((previous) => !previous)
+                      }
+                      disabled={processing}
+                  >
+                    {showMpin ? "Hide" : "Show"}
+                  </button>
+                </div>
+
+                <div className="service-mpin-hint">
+                  <span>🔐</span>
+                  Your MPIN is verified securely by PayWave.
+                </div>
+              </div>
+
+              {message && (
+                  <p className="service-error" role="alert">
+                    {message}
+                  </p>
+              )}
+
+              <button
+                  className="service-primary"
+                  type="button"
+                  onClick={handleConfirm}
+                  disabled={processing}
+              >
+                {processing
+                    ? "Verifying MPIN & Processing..."
+                    : `Pay ₹${Number(amount).toLocaleString("en-IN")}`}
+              </button>
+
+              <button
+                  className="service-secondary"
+                  type="button"
+                  onClick={() => {
+                    setMpin("");
+                    setMessage("");
+                    setStep("form");
+                  }}
+                  disabled={processing}
+              >
+                Edit Details
+              </button>
+            </section>
+        )}
+
+        {/* SUCCESS */}
+        {step === "success" && (
+            <section className="service-result">
+              <div className="service-success-icon">✓</div>
+
+              <h2>Payment Recorded Successfully!</h2>
+
+              <p>
+                Your payment request was processed by PayWave.
+              </p>
+
+              <div className="service-summary">
+                <div>
+                  <span>Service</span>
+                  <strong>{service}</strong>
+                </div>
+
+                <div>
+                  <span>Reference</span>
+                  <strong>{reference}</strong>
+                </div>
+
+                <div>
+                  <span>Amount</span>
+                  <strong>
+                    ₹{Number(amount).toLocaleString("en-IN")}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>Status</span>
+                  <strong className="service-status">
+                    {paymentStatus}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="service-demo-notice">
+                This is an educational payment simulation.
+                No actual recharge or utility payment has been made.
+              </div>
+
+              <button
+                  className="service-primary"
+                  type="button"
+                  onClick={handleReset}
+              >
+                Make Another Payment
+              </button>
+
+              <button
+                  className="service-secondary"
+                  type="button"
+                  onClick={onBack}
+              >
+                Back to Home
+              </button>
+            </section>
+        )}
+
+        <p className="service-disclaimer">
+          Educational simulation only. No actual recharge,
+          bill payment or money transfer occurs.
+        </p>
+
+      </main>
   );
 }
 

@@ -7,7 +7,10 @@
     overflow-x: hidden;
 }
 
-/* Header */
+/* =====================================
+   HEADER
+===================================== */
+
 .scan-header {
     display: flex;
     align-items: center;
@@ -24,6 +27,8 @@
     border-radius: 14px;
     background: #ffffff;
     color: #172b3a;
+    cursor: pointer;
+    font-size: 22px;
 }
 
 .scan-header h2 {
@@ -37,7 +42,10 @@
     font-size: 11px;
 }
 
-/* Intro */
+/* =====================================
+   INTRO
+===================================== */
+
 .scan-intro {
     margin-bottom: 24px;
     text-align: center;
@@ -67,7 +75,10 @@
     line-height: 1.7;
 }
 
-/* Camera Card */
+/* =====================================
+   CAMERA CARD
+===================================== */
+
 .scan-camera-card {
     padding: 14px;
     border: 1px solid #e8e2da;
@@ -88,20 +99,28 @@
 }
 
 .scan-video {
-    display: none;
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.scan-camera-view.active .scan-video {
-    display: block;
-}
+/* =====================================
+   CAMERA PLACEHOLDER
+===================================== */
 
 .scan-camera-placeholder {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 20px;
     text-align: center;
     color: #ffffff;
+    background: #172b3a;
 }
 
 .scan-placeholder-icon {
@@ -125,115 +144,182 @@
     margin-top: 7px;
     color: #b9c4ca;
     font-size: 10px;
+    line-height: 1.6;
 }
 
-/* Scanning Frame */
+/* =====================================
+   SCANNING FRAME
+===================================== */
+
 .scan-frame {
     position: absolute;
-    width: 205px;
-    height: 205px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 225px;
+    height: 225px;
+    z-index: 4;
     pointer-events: none;
 }
 
 .scan-corner {
     position: absolute;
-    width: 31px;
-    height: 31px;
-    border-color: #ffad55;
+    width: 38px;
+    height: 38px;
     border-style: solid;
+    border-width: 0;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.35));
 }
 
 .scan-corner.top-left {
     top: 0;
     left: 0;
-    border-width: 3px 0 0 3px;
-    border-radius: 8px 0 0;
+    border-top: 4px solid #ffad55;
+    border-left: 4px solid #ffad55;
+    border-radius: 10px 0 0 0;
 }
 
 .scan-corner.top-right {
     top: 0;
     right: 0;
-    border-width: 3px 3px 0 0;
-    border-radius: 0 8px 0 0;
+    border-top: 4px solid #ffffff;
+    border-right: 4px solid #ffffff;
+    border-radius: 0 10px 0 0;
 }
 
 .scan-corner.bottom-left {
     bottom: 0;
     left: 0;
-    border-width: 0 0 3px 3px;
-    border-radius: 0 0 0 8px;
+    border-bottom: 4px solid #ffffff;
+    border-left: 4px solid #ffffff;
+    border-radius: 0 0 0 10px;
 }
 
 .scan-corner.bottom-right {
     right: 0;
     bottom: 0;
-    border-width: 0 3px 3px 0;
-    border-radius: 0 0 8px;
+    border-bottom: 4px solid #ffad55;
+    border-right: 4px solid #ffad55;
+    border-radius: 0 0 10px 0;
 }
+
+/* Animated scanning line */
 
 .scan-line {
     position: absolute;
-    top: 0;
+    top: 5px;
     left: 5px;
     right: 5px;
     height: 2px;
     background: #ffad55;
-    box-shadow: 0 0 12px rgba(255, 173, 85, 0.9);
-    animation: scanMove 2s ease-in-out infinite alternate;
+    box-shadow: 0 0 14px rgba(255, 173, 85, 0.95);
+    animation: paywaveScanLine 2s ease-in-out infinite alternate;
 }
 
-@keyframes scanMove {
+@keyframes paywaveScanLine {
     from {
         top: 5px;
     }
+
     to {
         top: calc(100% - 5px);
     }
 }
 
-.scan-camera-caption {
-    margin: 13px 0;
-    color: #77838d;
-    text-align: center;
-    font-size: 10px;
+/* =====================================
+   CAMERA STATUS
+===================================== */
+
+.scan-camera-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    margin: 15px 0 4px;
 }
 
-/* Camera Button */
+.scan-camera-status p {
+    margin: 0;
+    color: #77838d;
+    font-size: 11px;
+}
+
+.scan-status-dot {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-radius: 50%;
+    background: #ffad55;
+}
+
+.scan-status-dot.online {
+    background: #20a875;
+    box-shadow: 0 0 0 4px rgba(32, 168, 117, 0.12);
+}
+
+/* =====================================
+   BUTTONS
+===================================== */
+
 .scan-camera-button {
     width: 100%;
     min-height: 51px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 12px;
     border: 0;
     border-radius: 14px;
     background: #172b3a;
     color: #ffffff;
     font-size: 12px;
     font-weight: 750;
-}
-
-.scan-camera-button.stop {
-    background: #dc4545;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .scan-camera-button:active {
     transform: scale(0.98);
 }
 
-/* Error */
-.scan-error {
-    margin-top: 13px;
-    padding: 12px 14px;
-    border: 1px solid #f2d5d5;
-    border-radius: 12px;
-    background: #fff0f0;
-    color: #c33b3b;
-    font-size: 11px;
-    line-height: 1.6;
+.scan-camera-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
-/* Manual Entry */
+.scan-secondary-button {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 12px;
+    border: 1px solid #e8e2da;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #172b3a;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* =====================================
+   ERROR
+===================================== */
+
+.scan-error {
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid #f2d5d5;
+    border-radius: 10px;
+    background: #fff0f0;
+    color: #c0392b;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* =====================================
+   MANUAL PAYWAVE ID
+===================================== */
+
 .scan-manual-section {
     margin-top: 27px;
 }
@@ -283,6 +369,7 @@
     background: #ffffff;
     color: #172b3a;
     font-size: 12px;
+    box-sizing: border-box;
 }
 
 .scan-manual-section input:focus {
@@ -300,9 +387,13 @@
     color: #b96712;
     font-size: 12px;
     font-weight: 750;
+    cursor: pointer;
 }
 
-/* Result */
+/* =====================================
+   RESULT CARD
+===================================== */
+
 .scan-result-card {
     padding: 25px 19px;
     border: 1px solid #e8e2da;
@@ -321,7 +412,96 @@
     border-radius: 50%;
     background: #e8f6ef;
     color: #16865c;
+    font-size: 30px;
 }
+
+/* =====================================
+   VERIFIED RECIPIENT CARD
+===================================== */
+
+.scan-verified-recipient {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    margin: 22px 0;
+    padding: 16px;
+    box-sizing: border-box;
+    border: 1px solid #e8e2da;
+    border-radius: 17px;
+    background: #ffffff;
+    text-align: left;
+}
+
+.scan-recipient-avatar {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #172b3a;
+    color: #ffad55;
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.scan-recipient-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.scan-recipient-info h3 {
+    margin: 0 0 5px;
+    color: #172b3a;
+    font-size: 16px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.scan-recipient-info p {
+    margin: 0 0 8px;
+    color: #77838d;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.scan-verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #16865c;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.scan-verified-badge span,
+.scan-verified-check {
+    display: inline-grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #e8f6ef;
+    color: #16865c;
+    font-weight: 800;
+}
+
+.scan-verified-badge span {
+    width: 17px;
+    height: 17px;
+    font-size: 11px;
+}
+
+.scan-verified-check {
+    width: 25px;
+    height: 25px;
+    min-width: 25px;
+    font-size: 14px;
+}
+
+/* =====================================
+   PAYMENT DETAILS
+===================================== */
 
 .scan-result-details {
     margin-top: 23px;
@@ -356,6 +536,48 @@
     font-size: 11px;
 }
 
+/* =====================================
+   AMOUNT & MPIN INPUT
+===================================== */
+
+.scan-payment-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 22px 0;
+    text-align: left;
+}
+
+.scan-payment-input label {
+    margin-top: 10px;
+    color: #77838d;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.scan-payment-input input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    border: 1px solid #e8e2da;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #172b3a;
+    font-size: 15px;
+    outline: none;
+}
+
+.scan-payment-input input:focus {
+    border-color: #f28c28;
+    box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.12);
+}
+
+/* =====================================
+   PAYMENT NOTICE
+===================================== */
+
 .scan-demo-notice {
     margin: 17px 0;
     padding: 12px;
@@ -366,19 +588,21 @@
     line-height: 1.6;
 }
 
-.scan-secondary-button {
-    width: 100%;
-    min-height: 46px;
-    margin-top: 10px;
-    border: 1px solid #e8e2da;
-    border-radius: 13px;
-    background: #ffffff;
-    color: #172b3a;
-    font-size: 12px;
-    font-weight: 700;
+/* =====================================
+   LOADING
+===================================== */
+
+.scan-loading {
+    padding: 15px;
+    color: #77838d;
+    text-align: center;
+    font-size: 13px;
 }
 
-/* Disclaimer */
+/* =====================================
+   DISCLAIMER
+===================================== */
+
 .scan-disclaimer {
     margin-top: 24px;
     color: #9aa2a7;
@@ -387,24 +611,27 @@
     line-height: 1.6;
 }
 
-
 /* =====================================
-   HTML5 QR SCANNER
+   HTML5 QR SCANNER OVERRIDES
 ===================================== */
 
 #qr-reader {
-    width: 100%;
-    height: 100%;
     position: absolute;
     inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     border: none !important;
+    background: #102638;
 }
 
 #qr-reader video {
+    display: block !important;
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover;
+    object-fit: cover !important;
     border: none !important;
 }
 
@@ -424,16 +651,43 @@
     display: none !important;
 }
 
-.scan-camera-view {
-    position: relative;
-    overflow: hidden;
+/* =====================================
+   RESPONSIVE DESIGN
+===================================== */
+
+@media (max-width: 480px) {
+    .scan-page {
+        padding: 20px 16px 30px;
+    }
+
+    .scan-camera-view {
+        height: 285px;
+    }
+
+    .scan-frame {
+        width: 205px;
+        height: 205px;
+    }
+
+    .scan-verified-recipient {
+        padding: 13px;
+        gap: 10px;
+    }
+
+    .scan-result-card {
+        padding: 22px 15px;
+    }
 }
 
-.scan-camera-placeholder {
-    z-index: 2;
-}
+@media (max-width: 350px) {
+    .scan-frame {
+        width: 185px;
+        height: 185px;
+    }
 
-.scan-frame {
-    z-index: 3;
-    pointer-events: none;
+    .scan-recipient-avatar {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+    }
 }

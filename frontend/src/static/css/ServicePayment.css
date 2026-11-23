@@ -1,10 +1,19 @@
 
+/* =====================================
+   SERVICE PAYMENT PAGE
+===================================== */
+
 .service-page {
   min-height: 100vh;
-  padding: 24px 22px 35px;
+  padding: 24px 22px 105px;
   background: #f7f5f1;
   color: #172b3a;
+  box-sizing: border-box;
 }
+
+/* =====================================
+   HEADER
+===================================== */
 
 .service-header {
   display: flex;
@@ -16,11 +25,18 @@
 .service-back {
   width: 43px;
   height: 43px;
+  flex-shrink: 0;
   border: 1px solid #e8e2da;
   border-radius: 13px;
   background: white;
   color: #172b3a;
   font-size: 23px;
+  cursor: pointer;
+}
+
+.service-back:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .service-header h2 {
@@ -33,6 +49,10 @@
   color: #77838d;
   font-size: 11px;
 }
+
+/* =====================================
+   SERVICE BANNER
+===================================== */
 
 .service-banner {
   padding: 28px 20px;
@@ -66,6 +86,10 @@
   font-size: 11px;
 }
 
+/* =====================================
+   PAYMENT FORM
+===================================== */
+
 .service-form,
 .service-result {
   margin-top: 20px;
@@ -73,6 +97,7 @@
   border: 1px solid #e8e2da;
   border-radius: 19px;
   background: white;
+  box-sizing: border-box;
 }
 
 .service-form label {
@@ -99,12 +124,18 @@
   color: #172b3a;
   font: inherit;
   font-size: 12px;
+  box-sizing: border-box;
 }
 
 .service-form input:focus,
 .service-form select:focus {
   border-color: #f28c28;
+  box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.10);
 }
+
+/* =====================================
+   QUICK AMOUNT BUTTONS
+===================================== */
 
 .service-quick-amounts {
   display: flex;
@@ -121,7 +152,16 @@
   color: #a85d12;
   font-size: 11px;
   font-weight: 700;
+  cursor: pointer;
 }
+
+.service-quick-amounts button:active {
+  transform: scale(0.97);
+}
+
+/* =====================================
+   PRIMARY & SECONDARY BUTTONS
+===================================== */
 
 .service-primary,
 .service-secondary {
@@ -132,11 +172,29 @@
   border-radius: 12px;
   font-size: 12px;
   font-weight: 750;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
 }
 
 .service-primary {
   background: #172b3a;
   color: white;
+}
+
+.service-primary:hover {
+  background: #223d50;
+}
+
+.service-primary:active,
+.service-secondary:active {
+  transform: scale(0.98);
+}
+
+.service-primary:disabled,
+.service-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .service-secondary {
@@ -146,11 +204,24 @@
   color: #172b3a;
 }
 
+/* =====================================
+   ERROR MESSAGE
+===================================== */
+
 .service-error {
   margin-top: 12px;
+  padding: 11px 12px;
+  border: 1px solid #ffd2d2;
+  border-radius: 10px;
+  background: #fff2f2;
   color: #dc4545;
   font-size: 11px;
+  line-height: 1.5;
 }
+
+/* =====================================
+   PAYMENT REVIEW
+===================================== */
 
 .service-result {
   padding: 25px 19px;
@@ -171,6 +242,10 @@
   font-size: 11px;
 }
 
+/* =====================================
+   PAYMENT SUMMARY
+===================================== */
+
 .service-summary {
   margin-top: 22px;
   padding: 8px 14px;
@@ -182,6 +257,7 @@
 .service-summary > div {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 12px;
   padding: 13px 0;
   border-bottom: 1px solid #e8e2da;
@@ -207,6 +283,125 @@
   color: #16865c;
 }
 
+/* =====================================
+   MPIN AUTHENTICATION
+===================================== */
+
+.service-mpin-section {
+  margin-top: 22px;
+  padding: 17px 14px;
+  border: 1px solid #eee3d7;
+  border-radius: 14px;
+  background: #fffaf5;
+  text-align: left;
+}
+
+.service-mpin-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.service-mpin-heading h3 {
+  color: #172b3a;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.service-mpin-heading p {
+  margin-top: 5px;
+  color: #77838d;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.service-lock-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #fff0df;
+  font-size: 17px;
+}
+
+.service-mpin-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 49px;
+  padding: 0 12px;
+  border: 1px solid #e8e2da;
+  border-radius: 11px;
+  background: white;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.service-mpin-input-wrapper:focus-within {
+  border-color: #f28c28;
+  box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.10);
+}
+
+.service-mpin-input-wrapper input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 47px;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #172b3a;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 5px;
+}
+
+.service-mpin-input-wrapper input::placeholder {
+  color: #aab1b6;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.service-mpin-input-wrapper input:disabled {
+  opacity: 0.6;
+}
+
+.service-mpin-toggle {
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  color: #e77b16;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.service-mpin-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.service-mpin-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  color: #77838d;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* =====================================
+   SUCCESS SCREEN
+===================================== */
+
 .service-success-icon {
   width: 65px;
   height: 65px;
@@ -220,10 +415,61 @@
   font-weight: 800;
 }
 
+.service-demo-notice {
+  margin-top: 17px;
+  padding: 12px;
+  border: 1px solid #f3d6b7;
+  border-radius: 10px;
+  background: #fff7ef;
+  color: #94602a;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* =====================================
+   DISCLAIMER
+===================================== */
+
 .service-disclaimer {
   margin-top: 23px;
   color: #9aa2a7;
   text-align: center;
   font-size: 9px;
   line-height: 1.6;
+}
+
+/* =====================================
+   RESPONSIVE DESIGN
+===================================== */
+
+@media (max-width: 480px) {
+  .service-page {
+    padding: 20px 16px 105px;
+  }
+
+  .service-header {
+    margin-bottom: 22px;
+  }
+
+  .service-banner {
+    padding: 25px 16px;
+  }
+
+  .service-form,
+  .service-result {
+    padding: 18px 15px;
+  }
+
+  .service-result h2 {
+    font-size: 19px;
+  }
+
+  .service-summary {
+    padding: 7px 11px;
+  }
+
+  .service-mpin-section {
+    padding: 15px 11px;
+  }
 }

@@ -1,13 +1,21 @@
 
-/* ================================
+/* =====================================
    PROFILE PAGE
-================================ */
+===================================== */
 
 .profile-page {
   min-height: 100vh;
   background: #f7f5f1;
   color: #172b3a;
   padding-bottom: 30px;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.profile-page *,
+.profile-page *::before,
+.profile-page *::after {
+  box-sizing: border-box;
 }
 
 .profile-header {
@@ -20,6 +28,7 @@
 .profile-back-button {
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
   border: 1px solid #e8e2da;
   border-radius: 12px;
   background: #ffffff;
@@ -28,6 +37,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .profile-header h1 {
@@ -55,11 +65,14 @@
 
 .profile-content {
   padding: 0 22px;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
 }
 
-/* ================================
+/* =====================================
    USER CARD
-================================ */
+===================================== */
 
 .profile-user-card {
   display: flex;
@@ -117,6 +130,7 @@
 .profile-member-check {
   width: 23px;
   height: 23px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: #16865c;
   color: white;
@@ -127,9 +141,9 @@
   font-weight: 800;
 }
 
-/* ================================
+/* =====================================
    SECTION HEADINGS
-================================ */
+===================================== */
 
 .profile-section {
   margin-top: 29px;
@@ -155,9 +169,9 @@
   letter-spacing: 1px;
 }
 
-/* ================================
+/* =====================================
    PERSONAL INFORMATION
-================================ */
+===================================== */
 
 .profile-info-card,
 .profile-menu-card {
@@ -205,9 +219,9 @@
   overflow-wrap: anywhere;
 }
 
-/* ================================
+/* =====================================
    MENU ITEMS
-================================ */
+===================================== */
 
 .profile-menu-item {
   display: flex;
@@ -275,9 +289,9 @@
   font-size: 24px;
 }
 
-/* ================================
+/* =====================================
    LOGOUT
-================================ */
+===================================== */
 
 .profile-logout-button {
   width: 100%;
@@ -293,6 +307,7 @@
   color: #dc4545;
   font-size: 13px;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .profile-logout-button:active {
@@ -308,19 +323,21 @@
   letter-spacing: 1px;
 }
 
-/* ================================
-   BOTTOM QR WALLET
-================================ */
+/* =====================================
+   BOTTOM QR WALLET SECTION
+===================================== */
 
 .profile-wallet-section {
   margin-top: 45px;
   padding: 25px 0 35px;
   text-align: center;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .profile-wallet-heading {
-  margin-bottom: 15px;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 4;
 }
 
 .profile-wallet-heading h2 {
@@ -336,53 +353,62 @@
   font-size: 12px;
 }
 
-/* Wallet animation area */
+/* =====================================
+   WALLET STAGE
+===================================== */
 
 .profile-wallet-stage {
   position: relative;
   width: 100%;
-  height: 330px;
+  max-width: 440px;
+  height: 440px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   overflow: hidden;
 }
 
-/* ================================
+/* =====================================
    QR CARD
-================================ */
+===================================== */
 
 .profile-wallet-qr-card {
   position: absolute;
   z-index: 1;
-  bottom: 55px;
-  width: 225px;
-  padding: 15px;
+  bottom: 72px;
+
+  width: 245px;
+  min-height: 350px;
+  padding: 16px 15px 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   background: #ffffff;
   border: 1px solid #e8e2da;
   border-radius: 17px;
   box-shadow: 0 8px 25px rgba(23, 43, 58, 0.13);
 
-  /* Initially inside wallet */
   opacity: 0;
   transform: translateY(125px) scale(0.9);
 
-  /* Smooth animation in both directions */
   transition:
-    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
-    opacity 0.7s ease;
+          transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+          opacity 0.7s ease;
 }
 
-/* QR comes out of wallet */
+/* QR card animation */
 
 .profile-wallet-section.revealed .profile-wallet-qr-card {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* ================================
+/* =====================================
    QR CARD CONTENTS
-================================ */
+===================================== */
 
 .profile-wallet-qr-card .profile-qr-brand {
   display: flex;
@@ -391,95 +417,138 @@
   gap: 7px;
   color: #172b3a;
   font-size: 15px;
+  flex-shrink: 0;
 }
 
+/* Actual QR container */
+
 .profile-wallet-qr-card .profile-qr-visual {
-  width: 125px;
-  height: 125px;
+  width: 210px;
+  height: 210px;
+  min-height: 210px;
+  flex-shrink: 0;
+
   margin: 12px auto;
-  padding: 7px;
+  padding: 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
   border: 1px solid #e8e2da;
-  border-radius: 8px;
+  border-radius: 10px;
 }
+
+/* QR SVG */
 
 .profile-wallet-qr-card .profile-qr-visual svg {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 190px;
+  height: 190px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Loading and error text */
+
+.profile-wallet-qr-card .profile-qr-visual p {
+  color: #77838d;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .profile-wallet-qr-card h3 {
   margin-top: 5px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .profile-wallet-qr-card .profile-demo-id {
-  margin-top: 3px;
+  margin-top: 5px;
   color: #77838d;
-  font-size: 11px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
 }
 
 .profile-wallet-qr-card .profile-qr-demo-label {
   display: block;
-  margin-top: 8px;
+  margin-top: 10px;
   color: #dc4545;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
+  letter-spacing: 1.5px;
 }
 
 .profile-wallet-qr-card .profile-copy-button {
   width: 100%;
-  min-height: 34px;
-  margin-top: 10px;
+  min-height: 38px;
+  margin-top: 12px;
+  flex-shrink: 0;
+
   border: none;
   border-radius: 9px;
   background: #172b3a;
   color: #ffffff;
-  font-size: 10px;
+
+  font-size: 11px;
   font-weight: 700;
+  cursor: pointer;
 }
 
-/* ================================
+.profile-wallet-qr-card .profile-copy-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =====================================
    WALLET BODY
-================================ */
+===================================== */
 
 .profile-wallet-body {
   position: absolute;
   z-index: 2;
   bottom: 0;
-  width: 275px;
+
+  width: min(100%, 410px);
   height: 115px;
 }
+
+/* Wallet front */
 
 .profile-wallet-front {
   position: absolute;
   bottom: 0;
+
   width: 100%;
   height: 100px;
-  padding: 25px 22px;
+  padding: 25px 35px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   background: linear-gradient(145deg, #263e4d, #172b3a);
   border: 2px solid #f28c28;
-  border-radius: 15px 15px 22px 22px;
+  border-radius: 22px 22px 30px 30px;
   box-shadow: 0 12px 25px rgba(23, 43, 58, 0.2);
 }
 
 .profile-wallet-brand {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 12px;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 19px;
 }
 
 .profile-wallet-decoration {
-  width: 35px;
-  height: 25px;
-  border: 2px solid #ffad55;
-  border-radius: 6px;
+  width: 52px;
+  height: 37px;
+  border: 3px solid #ffad55;
+  border-radius: 9px;
 }
 
 /* Wallet flap */
@@ -489,24 +558,26 @@
   z-index: 3;
   top: 0;
   left: 50%;
-  width: 75px;
-  height: 22px;
+
+  width: 112px;
+  height: 24px;
+
   transform: translateX(-50%);
   background: #f28c28;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 15px 15px;
 }
 
 .profile-wallet-clasp {
-  width: 22px;
-  height: 7px;
+  width: 33px;
+  height: 9px;
   margin: 7px auto;
   background: #172b3a;
   border-radius: 5px;
 }
 
-/* ================================
+/* =====================================
    QR NOTE
-================================ */
+===================================== */
 
 .profile-qr-note {
   max-width: 300px;
@@ -516,27 +587,76 @@
   line-height: 1.6;
 }
 
-/* ================================
-   RESPONSIVE
-================================ */
+/* =====================================
+   RESPONSIVE DESIGN
+===================================== */
 
-@media (max-width: 360px) {
+@media (max-width: 480px) {
   .profile-content {
     padding: 0 16px;
   }
 
-  .profile-wallet-body {
-    width: 250px;
+  .profile-wallet-section {
+    margin-top: 38px;
+    padding-top: 20px;
+  }
+
+  .profile-wallet-heading h2 {
+    font-size: 22px;
+  }
+
+  .profile-wallet-stage {
+    height: 425px;
   }
 
   .profile-wallet-qr-card {
-    width: 215px;
+    width: 245px;
+    bottom: 72px;
+  }
+
+  .profile-wallet-body {
+    width: min(100%, 410px);
   }
 }
 
-/* ================================
+@media (max-width: 360px) {
+  .profile-content {
+    padding: 0 12px;
+  }
+
+  .profile-wallet-stage {
+    height: 410px;
+  }
+
+  .profile-wallet-qr-card {
+    width: 225px;
+    padding: 14px 12px;
+    bottom: 70px;
+  }
+
+  .profile-wallet-qr-card .profile-qr-visual {
+    width: 195px;
+    height: 195px;
+    min-height: 195px;
+  }
+
+  .profile-wallet-qr-card .profile-qr-visual svg {
+    width: 175px;
+    height: 175px;
+  }
+
+  .profile-wallet-body {
+    width: 100%;
+  }
+
+  .profile-wallet-front {
+    padding: 22px;
+  }
+}
+
+/* =====================================
    ACCESSIBILITY
-================================ */
+===================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .profile-wallet-qr-card {

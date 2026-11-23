@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,15 +27,18 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final WalletService walletService;
+    private final PasswordEncoder passwordEncoder;
 
     public TransactionService(
             TransactionRepository transactionRepository,
             UserRepository userRepository,
-            WalletService walletService) {
+            WalletService walletService,
+            PasswordEncoder passwordEncoder) {
 
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
         this.walletService = walletService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<TransactionResponse> getMyTransaction() {
@@ -114,6 +118,29 @@ public class TransactionService {
             );
         }
 
+        // Fetch authenticated sender
+        User sender = userRepository.findById(senderId)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Sender not found"
+                        )
+                );
+
+        // Verify actual MPIN
+        if (request.getMpin() == null
+                || !passwordEncoder.matches(
+                request.getMpin(),
+                sender.getMpin_hash()
+        )) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Incorrect MPIN"
+            );
+        }
+
+        // Find receiver
         User receiver = userRepository
                 .findByPaywaveId(request.getReceiverPaywaveId().trim())
                 .orElseThrow(() ->
@@ -123,6 +150,15 @@ public class TransactionService {
                         )
                 );
 
+        // Prevent sending money to yourself
+        if (senderId.equals(receiver.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "You cannot send money to yourself"
+            );
+        }
+
+        // Transfer money through existing wallet service
         walletService.transferMoney(
                 senderId,
                 receiver.getId(),

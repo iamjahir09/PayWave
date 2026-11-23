@@ -46,3 +46,4 @@ export const getPaymentReminders = () => api.get("/api/payment-reminders");
 export const updatePaymentReminder = (id, payload) => api.put(`/api/payment-reminders/${id}`, payload);
 export const markReminderPaid = (id) => api.patch(`/api/payment-reminders/${id}/paid`);
 export const deletePaymentReminder = (id) => api.delete(`/api/payment-reminders/${id}`);
+export const getPayWaveRecipient = (paywaveId) =>api.get("/api/users/lookup", {params: { paywaveId },});

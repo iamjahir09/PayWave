@@ -1,7 +1,7 @@
+
 package com.paywave.entity;
 
 import jakarta.persistence.*;
-
 import java.time.Instant;
 
 @Entity
@@ -18,7 +18,14 @@ public class RevokedToken {
     @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;
 
+    // Required by JPA
+    protected RevokedToken() {
+    }
+
+    // Constructor for creating revoked token
     public RevokedToken(String tokenHash, Instant expiration) {
+        this.tokenHash = tokenHash;
+        this.expiresAt = expiration;
     }
 
     public Long getId() {
