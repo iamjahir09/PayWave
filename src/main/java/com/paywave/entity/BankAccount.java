@@ -46,6 +46,9 @@ public class BankAccount {
     @Column(name = "otp_attempts", nullable = false)
     private int otpAttempts = 0;
 
+    @Column(name = "simulated_balance", nullable = false, precision = 12, scale = 2)
+    private java.math.BigDecimal simulatedBalance = java.math.BigDecimal.ZERO;
+
     public Long getId() {
         return id;
     }
@@ -140,5 +143,13 @@ public class BankAccount {
 
     public void setOtpAttempts(int otpAttempts) {
         this.otpAttempts = otpAttempts;
+    }
+
+    public java.math.BigDecimal getSimulatedBalance() {
+        return simulatedBalance;
+    }
+
+    public void setSimulatedBalance(java.math.BigDecimal simulatedBalance) {
+        this.simulatedBalance = simulatedBalance;
     }
 }

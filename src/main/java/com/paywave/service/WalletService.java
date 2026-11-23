@@ -103,7 +103,7 @@ public class WalletService {
         transaction.setTransactionType(TransactionType.ADD_MONEY);
         transaction.setTransactionStatus(TransactionStatus.SUCCESS);
         transaction.setCreatedAt(LocalDateTime.now());
-
+        transactionRepository.save(transaction);
         return new WalletResponse(
                 wallet.getId(),
                 wallet.getBalance(),

@@ -1,10 +1,7 @@
 
 package com.paywave.controller;
 
-import com.paywave.dto.BankAccountOtpResponse;
-import com.paywave.dto.BankAccountResponse;
-import com.paywave.dto.LinkBankAccountRequest;
-import com.paywave.dto.VerifyBankAccountOtpRequest;
+import com.paywave.dto.*;
 import com.paywave.service.BankAccountService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -78,4 +75,14 @@ public class BankAccountController {
         return ResponseEntity.ok(response);
     }
 
+    // Verify MPIN and check simulated bank balance
+    @PostMapping("/check-balance")
+    public ResponseEntity<BankBalanceResponse> checkBankBalance(
+            @Valid @RequestBody CheckBankBalanceRequest request) {
+
+        BankBalanceResponse response =
+                bankAccountService.checkBankBalance(request);
+
+        return ResponseEntity.ok(response);
+    }
 }

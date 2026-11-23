@@ -1,50 +1,162 @@
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "../../static/css/Home.css";
 import PayWaveIcon from "../../templates/components/PayWaveIcon";
+import {
+  getMyWallet,
+  getTransactionHistory,
+} from "../services/paywaveApi";
 
 function Home({
-  user,
-  onOpenBankAccounts,
-  onOpenHistory,
-  onOpenWallet,
-  onOpenProfile,
-  onOpenSendMoney,
-  onOpenReceiveMoney,
-  onOpenScanQR,
-  onOpenService,
-  onOpenSplitExpenses,
-  onOpenRequestMoney,
-  onOpenPaymentReminders,
-}) {
+                user,
+                onOpenBankAccounts,
+                onOpenHistory,
+                onOpenWallet,
+                onOpenProfile,
+                onOpenSendMoney,
+                onOpenReceiveMoney,
+                onOpenScanQR,
+                onOpenService,
+                onOpenSplitExpenses,
+                onOpenRequestMoney,
+                onOpenPaymentReminders,
+              }) {
   const displayName = user?.name || "PayWave User";
 
-  const contacts = [
-    { name: "Aman Khan", number: "9123456780", initial: "A" },
-    { name: "Rahul Sharma", number: "9876543210", initial: "R" },
-    { name: "Sara Khan", number: "9988776655", initial: "S" },
-    { name: "Arjun Mehta", number: "9876501234", initial: "A" },
-    { name: "Zoya Shaikh", number: "8765432109", initial: "Z" },
-    { name: "Kabir Patel", number: "9090909090", initial: "K" },
-    { name: "Neha Verma", number: "9898989898", initial: "N" },
-    { name: "Aditya Rao", number: "9123098765", initial: "A" },
-    { name: "Ishita Khan", number: "9988771122", initial: "I" },
-    { name: "Rohan Das", number: "9000012345", initial: "R" },
-  ];
+  const [wallet, setWallet] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [walletLoading, setWalletLoading] = useState(true);
+  const [transactionLoading, setTransactionLoading] = useState(true);
+  const [walletError, setWalletError] = useState("");
+  const [transactionError, setTransactionError] = useState("");
 
-  const [mobileNumber, setMobileNumber] = useState("");
+  const getErrorMessage = (error) =>
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      error?.message ||
+      "Something went wrong. Please try again.";
 
-  const filteredContacts = contacts.filter((contact) =>
-    contact.number.includes(mobileNumber)
-  );
+  // Fetch wallet balance
+  const loadWallet = useCallback(async () => {
+    try {
+      setWalletError("");
+      const response = await getMyWallet();
+      setWallet(response.data);
+    } catch (error) {
+      setWalletError(getErrorMessage(error));
+    } finally {
+      setWalletLoading(false);
+    }
+  }, []);
 
+  // Fetch transaction history
+  const loadTransactions = useCallback(async () => {
+    try {
+      setTransactionError("");
+
+      const response = await getTransactionHistory();
+
+      const data = Array.isArray(response.data)
+          ? response.data
+          : response.data?.content || response.data?.data || [];
+
+      setTransactions(Array.isArray(data) ? data : []);
+    } catch (error) {
+      setTransactionError(getErrorMessage(error));
+    } finally {
+      setTransactionLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadWallet();
+    loadTransactions();
+  }, [loadWallet, loadTransactions]);
+
+  // Currency formatter
+  const formatCurrency = (amount, currency = "INR") => {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(Number(amount || 0));
+  };
+
+  // Date formatter
+  const formatDate = (value) => {
+    if (!value) return "Date unavailable";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return "Date unavailable";
+    }
+
+    return date.toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  // Transaction information
+  const getTransactionDetails = (transaction) => {
+    const type = String(transaction.type || "").toUpperCase();
+
+    const isAddMoney = type === "ADD_MONEY";
+    const isSent = type === "SEND";
+
+    const name = isAddMoney
+        ? "Wallet Top-up"
+        : isSent
+            ? transaction.receiverName || "Unknown receiver"
+            : transaction.senderName || "Unknown sender";
+
+    return {
+      name,
+      isCredit: isAddMoney || type === "RECEIVE",
+    };
+  };
+
+  const recentTransactions = [...transactions]
+      .sort(
+          (a, b) =>
+              new Date(b.createdAt || 0) -
+              new Date(a.createdAt || 0)
+      )
+      .slice(0, 4);
+
+  // Quick actions
   const quickActions = [
-    { name: "Send Money", icon: "send", style: "send" },
-    { name: "Receive", icon: "receive", style: "receive" },
-    { name: "Scan QR", icon: "scan", style: "scan" },
-    { name: "Bank Account", icon: "bank", style: "bank" },
+    {
+      name: "Send Money",
+      icon: "send",
+      style: "send",
+      action: onOpenSendMoney,
+    },
+    {
+      name: "Receive",
+      icon: "receive",
+      style: "receive",
+      action: onOpenReceiveMoney,
+    },
+    {
+      name: "Scan QR",
+      icon: "scan",
+      style: "scan",
+      action: onOpenScanQR,
+    },
+    {
+      name: "Bank Account",
+      icon: "bank",
+      style: "bank",
+      action: onOpenBankAccounts,
+    },
   ];
 
+  // Everyday payments
   const everydayPayments = [
     { icon: "mobile", name: "Mobile Recharge", color: "orange" },
     { icon: "electricity", name: "Electricity", color: "yellow" },
@@ -52,327 +164,304 @@ function Home({
     { icon: "water", name: "Water Bill", color: "blue" },
   ];
 
-  const handleAction = (action) => {
-    switch (action) {
-      case "Bank Account":
-        onOpenBankAccounts();
-        break;
-      case "Send Money":
-        onOpenSendMoney();
-        break;
-      case "Receive":
-        onOpenReceiveMoney();
-        break;
-      case "Scan QR":
-        onOpenScanQR();
-        break;
-      default:
-        break;
-    }
-  };
+  // PayWave features
+  const features = [
+    {
+      title: "Split Expenses",
+      description: "Divide bills with your friends",
+      icon: "split",
+      style: "expense-icon",
+      action: onOpenSplitExpenses,
+    },
+    {
+      title: "Request Money",
+      description: "Request payments from people",
+      icon: "request",
+      style: "request-icon",
+      action: onOpenRequestMoney,
+    },
+    {
+      title: "Payment Reminders",
+      description: "Keep track of upcoming payments",
+      icon: "reminder",
+      style: "schedule-icon",
+      action: onOpenPaymentReminders,
+    },
+  ];
 
   return (
-    <main className="home-page">
+      <main className="home-page">
 
-      {/* Header */}
-      <header className="home-header">
-        <div>
-          <h1>PayWave<span>.</span></h1>
-          <p>Good day, {displayName.split(" ")[0]} 👋</p>
-        </div>
-
-        <button
-          className="profile-button"
-          onClick={onOpenProfile}
-          title="My Profile"
-          aria-label="My Profile"
-        >
-          {displayName.charAt(0).toUpperCase()}
-        </button>
-      </header>
-
-      {/* Search by Phone Number */}
-      <section className="home-search-section">
-        <div className="home-search-heading">
+        {/* HEADER */}
+        <header className="home-header">
           <div>
-            <span className="home-eyebrow">QUICK TRANSFER</span>
-            <h3>Find someone</h3>
+            <h1>
+              PayWave<span>.</span>
+            </h1>
+            <p>Good day, {displayName.split(" ")[0]} 👋</p>
           </div>
 
-          <PayWaveIcon name="upi" size={27} color="#F28C28" />
-        </div>
+          <button
+              className="profile-button"
+              onClick={onOpenProfile}
+              title="My Profile"
+              aria-label="My Profile"
+          >
+            {displayName.charAt(0).toUpperCase()}
+          </button>
+        </header>
 
-        <div className="mobile-search-box">
-          <PayWaveIcon name="profile" size={23} color="#77838D" />
+        {/* WALLET BALANCE */}
+        <section className="home-wallet-card">
+          <div className="home-wallet-top">
+            <span>YOUR PAYWAVE BALANCE</span>
+            <PayWaveIcon
+                name="wallet"
+                size={24}
+                color="#FFAD55"
+            />
+          </div>
 
-          <input
-            type="tel"
-            placeholder="Search by phone number"
-            value={mobileNumber}
-            onChange={(event) =>
-              setMobileNumber(
-                event.target.value.replace(/\D/g, "").slice(0, 10)
-              )
-            }
-            maxLength={10}
-            inputMode="numeric"
-          />
-
-          {mobileNumber && (
-            <button
-              type="button"
-              onClick={() => setMobileNumber("")}
-              aria-label="Clear search"
-            >
-              ×
-            </button>
+          {walletLoading ? (
+              <h2 className="home-wallet-amount">
+                Loading balance...
+              </h2>
+          ) : walletError ? (
+              <div className="home-wallet-error">
+                <span>{walletError}</span>
+                <button type="button" onClick={loadWallet}>
+                  Retry
+                </button>
+              </div>
+          ) : (
+              <h2 className="home-wallet-amount">
+                {formatCurrency(
+                    wallet?.balance,
+                    wallet?.currency || "INR"
+                )}
+              </h2>
           )}
-        </div>
 
-        {mobileNumber && (
-          <div className="search-results">
-            {filteredContacts.length > 0 ? (
-              filteredContacts.map((contact) => (
-                <div className="search-contact" key={contact.number}>
-                  <div className="contact-avatar">{contact.initial}</div>
-                  <div>
-                    <strong>{contact.name}</strong>
-                    <span>{contact.number}</span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="no-search-result">
-                No matching saved contact found.
-              </p>
-            )}
+          <div className="home-wallet-bottom">
+
+
+            <button type="button" onClick={onOpenWallet}>
+              View Wallet →
+            </button>
           </div>
-        )}
-      </section>
+        </section>
 
-      {/* Quick Actions */}
-      <section className="quick-actions">
-        <div className="section-heading">
-          <h3>Quick Actions</h3>
-          <span>PAYMENTS</span>
-        </div>
+        {/* QUICK ACTIONS */}
+        <section className="quick-actions">
+          <div className="section-heading">
+            <h3>Quick Actions</h3>
+            <span>PAYMENTS</span>
+          </div>
 
-        <div className="action-grid">
-          {quickActions.map((action) => (
-            <button
-              className="action-item"
-              key={action.name}
-              type="button"
-              onClick={() => handleAction(action.name)}
-            >
-              <span className={`action-icon ${action.style}`}>
+          <div className="action-grid">
+            {quickActions.map((action) => (
+                <button
+                    className="action-item"
+                    key={action.name}
+                    type="button"
+                    onClick={action.action}
+                >
+              <span className={`action-icon ${action.style}-icon`}>
                 <PayWaveIcon
-                  name={action.icon}
-                  size={30}
-                  color="#172B3A"
+                    name={action.icon}
+                    size={30}
+                    color="#172B3A"
                 />
               </span>
-              <span>{action.name}</span>
-            </button>
-          ))}
-        </div>
-      </section>
 
-      {/* Everyday Payments */}
-      <section className="everyday-section">
-        <div className="section-heading">
-          <h3>Everyday Payments</h3>
-          <span>DAILY SERVICES</span>
-        </div>
+                  <span>{action.name}</span>
+                </button>
+            ))}
+          </div>
+        </section>
 
-        <div className="everyday-grid">
-          {everydayPayments.map((item) => (
-            <button
-              className="everyday-item"
-              key={item.name}
-              type="button"
-              onClick={() => onOpenService(item.name)}
-            >
-              <div className={`everyday-icon ${item.color}`}>
-                <PayWaveIcon
-                  name={item.icon}
-                  size={30}
-                  color="#172B3A"
-                />
-              </div>
-              <span>{item.name}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* PayWave Features */}
-      <section className="features-section">
-        <div className="section-heading">
-          <h3>PayWave Features</h3>
-          <span>EXPLORE</span>
-        </div>
-
-        <div className="features-card">
-
-          <button
-            className="feature-item"
-            type="button"
-            onClick={onOpenSplitExpenses}
-            style={{
-              width: "100%",
-              border: 0,
-              background: "transparent",
-              textAlign: "left",
-              font: "inherit",
-            }}
-          >
-            <div className="feature-icon expense-icon">
-              <PayWaveIcon name="split" size={29} color="#172B3A" />
-            </div>
-
-            <div className="feature-info">
-              <h4>Split Expenses</h4>
-              <p>Divide bills with your friends</p>
-            </div>
-
-            <span className="feature-arrow">›</span>
-          </button>
-
-          <button
-            className="feature-item"
-            type="button"
-            onClick={onOpenRequestMoney}
-            style={{
-              width: "100%",
-              border: 0,
-              background: "transparent",
-              textAlign: "left",
-              font: "inherit",
-            }}
-          >
-            <div className="feature-icon request-icon">
-              <PayWaveIcon name="request" size={29} color="#172B3A" />
-            </div>
-
-            <div className="feature-info">
-              <h4>Request Money</h4>
-              <p>Request payments from people</p>
-            </div>
-
-            <span className="feature-arrow">›</span>
-          </button>
-
-          <button
-            className="feature-item"
-            type="button"
-            onClick={onOpenPaymentReminders}
-            style={{
-              width: "100%",
-              border: 0,
-              background: "transparent",
-              textAlign: "left",
-              font: "inherit",
-            }}
-          >
-            <div className="feature-icon schedule-icon">
-              <PayWaveIcon name="reminder" size={29} color="#172B3A" />
-            </div>
-
-            <div className="feature-info">
-              <h4>Payment Reminders</h4>
-              <p>Keep track of upcoming payments</p>
-            </div>
-
-            <span className="feature-arrow">›</span>
-          </button>
-
-        </div>
-      </section>
-
-      {/* PayWave Spotlight */}
-      <section className="spotlight-section">
-        <div className="spotlight-card">
-          <div className="spotlight-content">
-            <span>PAYWAVE SPOTLIGHT</span>
-            <h3>Stay one step ahead.</h3>
-            <p>
-              Never share your payment PIN with anyone.
-              Keep your money and account secure.
-            </p>
+        {/* EVERYDAY PAYMENTS */}
+        <section className="everyday-section">
+          <div className="section-heading">
+            <h3>Everyday Payments</h3>
+            <span>DAILY SERVICES</span>
           </div>
 
-          <div className="spotlight-symbol">
-            <PayWaveIcon name="security" size={43} color="#FFAD55" />
+          <div className="everyday-grid">
+            {everydayPayments.map((item) => (
+                <button
+                    className="everyday-item"
+                    key={item.name}
+                    type="button"
+                    onClick={() => onOpenService(item.name)}
+                >
+                  <div className={`everyday-icon ${item.color}`}>
+                    <PayWaveIcon
+                        name={item.icon}
+                        size={30}
+                        color="#172B3A"
+                    />
+                  </div>
+
+                  <span>{item.name}</span>
+                </button>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Your Contacts */}
-      <section className="people-section">
-        <div className="section-heading">
-          <h3>Your Contacts</h3>
-        </div>
+        {/* RECENT TRANSACTIONS */}
+        <section className="home-recent-section">
+          <div className="section-heading">
+            <h3>Recent Transactions</h3>
 
-        <div className="people-grid">
-          {contacts.map((contact, index) => (
             <button
-              type="button"
-              className="people-item"
-              key={contact.number}
-              onClick={() => setMobileNumber(contact.number)}
+                className="home-see-all"
+                type="button"
+                onClick={onOpenHistory}
             >
-              <div className={`people-avatar people-avatar-${index}`}>
-                {contact.initial}
-              </div>
-              <span>{contact.name.split(" ")[0]}</span>
+              See all
             </button>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      {/* Disclaimer */}
-      <p className="demo-disclaimer">
-        PayWave is an educational payment simulation.
-        No real money is transferred.
-      </p>
+          {transactionLoading ? (
+              <div className="home-transactions-state">
+                Loading transactions...
+              </div>
+          ) : transactionError ? (
+              <div className="home-transactions-state home-transactions-error">
+                <span>{transactionError}</span>
 
-      {/* Bottom Navigation */}
-      <nav className="bottom-navigation">
-        <button className="nav-item active" type="button">
-          <PayWaveIcon name="home" size={24} />
-          <span>Home</span>
-        </button>
+                <button
+                    type="button"
+                    onClick={loadTransactions}
+                >
+                  Retry
+                </button>
+              </div>
+          ) : recentTransactions.length === 0 ? (
+              <div className="home-transactions-state">
+                No transactions yet. Your recent activity will appear here.
+              </div>
+          ) : (
+              <div className="home-transactions-card">
+                {recentTransactions.map((transaction, index) => {
+                  const details =
+                      getTransactionDetails(transaction);
 
-        <button
-          className="nav-item"
-          type="button"
-          onClick={onOpenHistory}
-        >
-          <PayWaveIcon name="history" size={24} />
-          <span>History</span>
-        </button>
+                  const successful =
+                      String(transaction.status || "").toUpperCase() ===
+                      "SUCCESS";
 
-        <button
-          className="nav-item"
-          type="button"
-          onClick={onOpenWallet}
-        >
-          <PayWaveIcon name="wallet" size={24} />
-          <span>Wallet</span>
-        </button>
+                  return (
+                      <div
+                          className="home-transaction-row"
+                          key={
+                              transaction.transactionReference ||
+                              transaction.id ||
+                              index
+                          }
+                      >
+                        <div
+                            className={`home-transaction-icon ${
+                                details.isCredit ? "credit" : "debit"
+                            }`}
+                        >
+                          <PayWaveIcon
+                              name={details.isCredit ? "receive" : "send"}
+                              size={19}
+                              color={
+                                details.isCredit ? "#16865C" : "#D66E25"
+                              }
+                          />
+                        </div>
 
-        <button
-          className="nav-item"
-          type="button"
-          onClick={onOpenProfile}
-        >
-          <PayWaveIcon name="profile" size={24} />
-          <span>Profile</span>
-        </button>
-      </nav>
+                        <div className="home-transaction-info">
+                          <strong>{details.name}</strong>
 
-    </main>
+                          <span>
+                      {formatDate(transaction.createdAt)} ·{" "}
+                            {successful
+                                ? "Successful"
+                                : transaction.status || "Status unavailable"}
+                    </span>
+                        </div>
+
+                        <strong
+                            className={`home-transaction-amount ${
+                                details.isCredit ? "credit" : "debit"
+                            }`}
+                        >
+                          {details.isCredit ? "+" : "−"}
+                          {formatCurrency(
+                              transaction.amount,
+                              transaction.currency || "INR"
+                          )}
+                        </strong>
+                      </div>
+                  );
+                })}
+              </div>
+          )}
+        </section>
+
+        {/* PAYWAVE FEATURES */}
+        <section className="features-section">
+          <div className="section-heading">
+            <h3>PayWave Features</h3>
+            <span>EXPLORE</span>
+          </div>
+
+          <div className="features-card">
+            {features.map((feature) => (
+                <button
+                    className="feature-item"
+                    type="button"
+                    key={feature.title}
+                    onClick={feature.action}
+                >
+                  <div className={`feature-icon ${feature.style}`}>
+                    <PayWaveIcon
+                        name={feature.icon}
+                        size={29}
+                        color="#172B3A"
+                    />
+                  </div>
+
+                  <div className="feature-info">
+                    <h4>{feature.title}</h4>
+                    <p>{feature.description}</p>
+                  </div>
+
+                  <span className="feature-arrow">›</span>
+                </button>
+            ))}
+          </div>
+        </section>
+
+        {/* PAYWAVE SPOTLIGHT */}
+        <section className="spotlight-section">
+          <div className="spotlight-card">
+            <div className="spotlight-content">
+              <span>PAYWAVE SPOTLIGHT</span>
+
+              <h3>Stay one step ahead.</h3>
+
+              <p>
+                Never share your payment PIN with anyone.
+                Keep your money and account secure.
+              </p>
+            </div>
+
+            <div className="spotlight-symbol">
+              <PayWaveIcon
+                  name="security"
+                  size={43}
+                  color="#FFAD55"
+              />
+            </div>
+          </div>
+        </section>
+      </main>
   );
 }
 

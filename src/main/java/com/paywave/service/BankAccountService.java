@@ -1,9 +1,7 @@
 
 package com.paywave.service;
 
-import com.paywave.dto.BankAccountOtpResponse;
-import com.paywave.dto.BankAccountResponse;
-import com.paywave.dto.LinkBankAccountRequest;
+import com.paywave.dto.*;
 import com.paywave.entity.BankAccount;
 import com.paywave.entity.User;
 import com.paywave.repository.BankAccountRepository;
@@ -13,8 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.paywave.dto.VerifyBankAccountOtpRequest;
 
+import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -83,7 +81,7 @@ public class BankAccountService {
 
         bankAccount.setPrimary(false);
         bankAccount.setVerified(false);
-
+        bankAccount.setCreatedAt(LocalDateTime.now());
         bankAccountRepository.save(bankAccount);
 
         String otp = generateOtp();
@@ -141,6 +139,11 @@ public class BankAccountService {
         }
 
         bankAccount.setVerified(true);
+
+        BigDecimal simulatedBalance = BigDecimal.valueOf(
+                100000 + secureRandom.nextInt(9_900_001),
+                2
+        );
 
         bankAccount.setOtpHash(null);
         bankAccount.setOtpExpiresAt(null);
@@ -254,4 +257,61 @@ public class BankAccountService {
         return "Bank account deleted successfully";
     }
 
+    @Transactional(readOnly = true)
+    public BankBalanceResponse checkBankBalance(
+            CheckBankBalanceRequest request) {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        Long userId = (Long) authentication.getPrincipal();
+
+        // Fetch logged-in user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        // Verify user's MPIN
+        if (!passwordEncoder.matches(
+                request.getMpin(),
+                user.getMpin_hash())) {
+
+            throw new RuntimeException("Incorrect MPIN");
+        }
+
+        // Fetch bank account belonging to this user
+        BankAccount bankAccount =
+                bankAccountRepository.findByIdAndUserId(
+                        request.getBankAccountId(),
+                        userId
+                ).orElseThrow(() ->
+                        new RuntimeException("Bank account not found"));
+
+        // Only verified accounts can show balance
+        if (!bankAccount.isVerified()) {
+            throw new RuntimeException(
+                    "Please verify your bank account first");
+        }
+
+        BigDecimal balance = bankAccount.getSimulatedBalance();
+
+        if (balance == null) {
+            throw new RuntimeException(
+                    "Balance is not available for this account");
+        }
+
+        String accountNumber = bankAccount.getAccountNumber();
+
+        String maskedAccountNumber = "XXXXXX" +
+                accountNumber.substring(accountNumber.length() - 4);
+
+        return new BankBalanceResponse(
+                bankAccount.getId(),
+                bankAccount.getBankName(),
+                maskedAccountNumber,
+                balance,
+                "INR",
+                "Balance verified successfully"
+        );
+    }
 }
