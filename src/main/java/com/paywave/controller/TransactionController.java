@@ -1,3 +1,4 @@
+
 package com.paywave.controller;
 
 import com.paywave.dto.SendMoneyRequest;
@@ -14,21 +15,25 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
-    private final SendMoneyRequest sendMoneyRequest;
-    public TransactionController(TransactionService transactionService, SendMoneyRequest sendMoneyRequest){
+
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
-        this.sendMoneyRequest = sendMoneyRequest;
     }
 
     @GetMapping("/history")
-    public ResponseEntity<List<TransactionResponse>> getMyTransactions(){
-        List<TransactionResponse> transactions = transactionService.getMyTransaction();
+    public ResponseEntity<List<TransactionResponse>> getMyTransactions() {
+        List<TransactionResponse> transactions =
+                transactionService.getMyTransaction();
+
         return ResponseEntity.ok(transactions);
     }
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendMoney(@Valid @RequestBody SendMoneyRequest request){
+    public ResponseEntity<String> sendMoney(
+            @Valid @RequestBody SendMoneyRequest request) {
+
         transactionService.sendMoney(request);
+
         return ResponseEntity.ok("Money sent successfully");
     }
 }

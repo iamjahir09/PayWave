@@ -1,10 +1,8 @@
+
 package com.paywave.entity;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Status;
-import jdk.jshell.Snippet;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

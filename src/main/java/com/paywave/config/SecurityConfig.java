@@ -1,8 +1,11 @@
+
 package com.paywave.config;
 
 import com.paywave.security.JwtAuthenticationFilter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,33 +17,52 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter){
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
-        throws Exception{
-            http
-                    .csrf(csrf -> csrf.disable())
-                    .formLogin(form -> form.disable())
-                    .sessionManagement(session ->
-                            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .addFilterBefore(
-                            jwtAuthenticationFilter,
-                            UsernamePasswordAuthenticationFilter.class
-                    )
-                    .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/api/auth/**", "/api/users/register")
-                            .permitAll()
-                            .anyRequest()
-                            .authenticated()
-                    );
-            return http.build();
-        };
+            throws Exception {
 
+        http
+                .csrf(csrf -> csrf.disable())
+
+                .formLogin(form -> form.disable())
+
+                .httpBasic(basic -> basic.disable())
+
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
+
+                .authorizeHttpRequests(auth -> auth
+
+                        // Public endpoints
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/users/register",
+                                "/actuator/health",
+                                "/actuator/health/**"
+                        ).permitAll()
+
+                        // All other endpoints require JWT authentication
+                        .anyRequest().authenticated()
+                )
+
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
+
+        return http.build();
+    }
 }

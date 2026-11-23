@@ -1,6 +1,6 @@
+
 package com.paywave.service;
 
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Service;
 
@@ -10,28 +10,31 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.HexFormat;
 
 @Service
 public class JwtService {
-    public final SecretKey secretKey;
 
-    public JwtService(SecretKey secretKey){
+    private final SecretKey secretKey;
+
+    public JwtService(SecretKey secretKey) {
         this.secretKey = secretKey;
     }
 
-    public String generateToken(Long userId){
+    public String generateToken(Long userId) {
+
         long currentTime = System.currentTimeMillis();
-        long expirationTime = currentTime + (1000*60*60);
+        long expirationTime = currentTime + (1000L * 60 * 60);
 
         return Jwts.builder()
                 .subject(String.valueOf(userId))
                 .issuedAt(new Date(currentTime))
                 .expiration(new Date(expirationTime))
-                .signWith(secretKey).compact();
+                .signWith(secretKey)
+                .compact();
     }
 
-    public Long extractUserId(String token){
+    public Long extractUserId(String token) {
+
         String subject = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
@@ -42,7 +45,6 @@ public class JwtService {
         return Long.parseLong(subject);
     }
 
-
     public String hashToken(String token) {
 
         try {
@@ -52,11 +54,26 @@ public class JwtService {
                     token.getBytes(StandardCharsets.UTF_8)
             );
 
-            return HexFormat.of().formatHex(hashedBytes);
+            return toHex(hashedBytes);
 
         } catch (NoSuchAlgorithmException ex) {
-            throw new IllegalStateException("SHA-256 algorithm not available", ex);
+            throw new IllegalStateException(
+                    "SHA-256 algorithm not available", ex
+            );
         }
+    }
+
+    private String toHex(byte[] bytes) {
+
+        StringBuilder hexString = new StringBuilder(bytes.length * 2);
+
+        for (byte b : bytes) {
+            hexString.append(
+                    String.format("%02x", b & 0xff)
+            );
+        }
+
+        return hexString.toString();
     }
 
     public Instant extractExpiration(String token) {
@@ -70,5 +87,4 @@ public class JwtService {
 
         return expiration.toInstant();
     }
-
 }

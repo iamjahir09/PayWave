@@ -3,8 +3,11 @@ package com.paywave.service;
 
 import com.paywave.entity.RevokedToken;
 import com.paywave.repository.RevokedTokenRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Service
 public class TokenRevocationService {
@@ -23,25 +26,26 @@ public class TokenRevocationService {
     @Transactional
     public void revokeToken(String token) {
 
-        // 1. Generate token hash
+        // Generate token hash
         String tokenHash = jwtService.hashToken(token);
 
-        // 2. Check whether token is already revoked
+        // Check whether token is already revoked
         if (revokedTokenRepository.existsByTokenHash(tokenHash)) {
             return;
         }
 
-        // 3. Extract original token expiration
-        var expiration = jwtService.extractExpiration(token);
+        // Extract original token expiration
+        Instant expiration = jwtService.extractExpiration(token);
 
-        // 4. Create revoked token record
+        // Create revoked token record
         RevokedToken revokedToken =
                 new RevokedToken(tokenHash, expiration);
 
-        // 5. Save in database
+        // Save in database
         revokedTokenRepository.save(revokedToken);
     }
 
+    @Transactional(readOnly = true)
     public boolean isTokenRevoked(String token) {
 
         String tokenHash = jwtService.hashToken(token);
