@@ -1,0 +1,220 @@
+/* ===== Base / Reset ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: #f7f9fc;
+}
+
+/* ===== Page Wrapper ===== */
+.welcome-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #f7f9fc;
+  padding: 0 20px;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== Top Header / Branding (CENTERED) ===== */
+.welcome-header {
+  padding-top: 56px;
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: center; /* logo + text center me */
+}
+
+.welcome-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.welcome-logo {
+  width: 48px;
+  height: 48px;
+  background: #1c2a4a;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.welcome-logo svg {
+  width: 32px;
+  height: 32px;
+}
+
+.welcome-brand > span {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1c2a4a;
+  letter-spacing: -0.3px;
+  line-height: 1;
+}
+
+/* ===== Main Content ===== */
+.welcome-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 36px;
+}
+
+/* Security Badge (centered) */
+.welcome-security-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eef1f6;
+  color: #4a5568;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  margin: 0 auto 22px; /* center align */
+}
+
+.welcome-security-icon {
+  color: #e86a24;
+  font-size: 10px;
+}
+
+/* Heading — ratio fix + centered */
+.welcome-content h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(26px, 8vw, 32px);
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 14px 0;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  text-align: center;
+}
+
+/* Description — centered */
+.welcome-description {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ===== Bottom Actions ===== */
+.welcome-actions {
+  padding-bottom: 28px;
+}
+
+/* Login Button (gradient) */
+.welcome-login-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #16233f 0%, #1c2a4a 100%);
+  border: none;
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  color: #fff;
+  text-align: left;
+  margin-bottom: 14px;
+  transition: opacity 0.2s ease;
+}
+
+.welcome-login-btn:active {
+  opacity: 0.85;
+}
+
+.welcome-button-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.welcome-button-content strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.welcome-button-content small {
+  font-size: 11px;
+  color: #9aa8c7;
+  font-weight: 400;
+}
+
+.welcome-arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #2e3d5f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* Create Account Button */
+.welcome-register-btn {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e9f0;
+  border-radius: 14px;
+  padding: 17px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #16233f;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: background 0.2s ease;
+}
+
+.welcome-register-btn:active {
+  background: #f0f3f8;
+}
+
+/* Trust line */
+.welcome-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #8a94a6;
+  margin-bottom: 16px;
+}
+
+.welcome-trust span {
+  font-size: 12px;
+}
+
+/* Footer text */
+.welcome-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #8a94a6;
+  margin: 0 0 14px 0;
+}
+
+/* Home indicator */
+.welcome-home-indicator {
+  width: 120px;
+  height: 4px;
+  background: #c7ccd6;
+  border-radius: 4px;
+  margin: 0 auto;
+}

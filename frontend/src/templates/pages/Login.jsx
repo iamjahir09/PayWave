@@ -1,194 +1,155 @@
 
 import { useState } from "react";
+import { sendOtp } from "../services/paywaveApi";
 import "../../static/css/Login.css";
 
-import { loginUser } from "../services/paywaveApi";
-import { getApiError } from "../services/apiClient";
-
-function Login({ onLogin, onRegister }) {
-  const [formData, setFormData] = useState({
-    mobileNumber: "",
-    mpin: "",
-  });
-
-  const [showMpin, setShowMpin] = useState(false);
+function Login({ onContinue, onRegister, onBack }) {
+  const [mobileNumber, setMobileNumber] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-
-    setFormData((previous) => ({
-      ...previous,
-      [name]: value.replace(/\D/g, ""),
-    }));
-
+  const handleMobileChange = (event) => {
+    const value = event.target.value.replace(/\D/g, "").slice(0, 10);
+    setMobileNumber(value);
     setError("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
 
-    if (!/^[6-9]\d{9}$/.test(formData.mobileNumber)) {
-      setError("Please enter a valid mobile number.");
-      return;
-    }
-
-    if (!/^\d{6}$/.test(formData.mpin)) {
-      setError("MPIN must contain exactly 6 digits.");
+    if (!/^[6-9]\d{9}$/.test(mobileNumber)) {
+      setError("Please enter a valid 10-digit mobile number.");
       return;
     }
 
     setLoading(true);
+    setError("");
 
     try {
-      // Authenticate user using backend and MySQL database
-      const response = await loginUser({
-        mobileNumber: formData.mobileNumber,
-        mpin: formData.mpin,
-      });
+      const response = await sendOtp(mobileNumber);
+      const demoOtp = response.data.demoOtp;
 
-      const token = response.data?.token;
-
-      if (!token) {
-        throw new Error(
-            "Authentication token was not received from the server."
-        );
+      if (!demoOtp) {
+        throw new Error("Demo OTP was not received from server.");
       }
 
-      // Persist JWT token across page refreshes
-      localStorage.setItem("token", token);
-
-      // Fetch authenticated user's profile from backend
-      await onLogin();
-
+      await onContinue(mobileNumber, demoOtp);
     } catch (err) {
-      // Clear token if authentication or profile loading fails
-      localStorage.removeItem("token");
-
-      setError(getApiError(err));
+      setError(
+        err.response?.data?.message ||
+        err.response?.data ||
+        err.message ||
+        "Unable to continue. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-      <main className="login-page">
+    <main className="login-page">
+      <header className="login-header">
+        <button
+          type="button"
+          className="login-back"
+          onClick={onBack}
+          aria-label="Go back"
+        >
+          ←
+        </button>
 
-        <div className="login-top">
-          <div className="login-brand">
-            <div className="login-brand-icon">P</div>
-            <h1>
-              PayWave<span>.</span>
-            </h1>
+        <div className="login-brand">
+          <div className="login-brand-icon">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path
+                d="M17 29C21 23 26 23 31 29L34 32"
+                stroke="white"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+              <path
+                d="M47 35C43 41 38 41 33 35L30 32"
+                stroke="white"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+              <circle cx="47" cy="17" r="5" fill="#E86A24" />
+            </svg>
           </div>
-
-          <div className="login-welcome">
-            <span className="welcome-label">WELCOME BACK</span>
-            <h2>
-              Good to see you<span>.</span>
-            </h2>
-            <p>Login to continue your payment journey.</p>
-          </div>
+          <span>PayWave</span>
         </div>
 
-        <div className="login-card">
+        <button type="button" className="login-help">
+          <span>ⓘ</span> Help
+        </button>
+      </header>
 
-          <form onSubmit={handleSubmit}>
+      <section className="login-content">
+        <h1>Welcome Back</h1>
 
-            <div className="login-form-heading">
-              <h3>Login to your account</h3>
-              <p>Enter your registered mobile number and MPIN.</p>
-            </div>
+        <p className="login-description">
+          Enter your mobile number to continue.
+        </p>
 
-            <div className="login-form-group">
-              <label htmlFor="loginMobile">Mobile Number</label>
+        <form onSubmit={handleSubmit}>
+          <div className="login-form-group">
+            <label htmlFor="loginMobile">Mobile Number</label>
 
-              <div className="login-input-wrapper">
-                <span className="input-prefix">+91</span>
-
-                <input
-                    id="loginMobile"
-                    type="tel"
-                    name="mobileNumber"
-                    placeholder="10-digit mobile number"
-                    value={formData.mobileNumber}
-                    onChange={handleChange}
-                    maxLength={10}
-                    inputMode="numeric"
-                    autoComplete="tel-national"
-                    required
-                />
+            <div className="login-input-wrapper">
+              <div className="login-country-code">
+                <span className="login-india-flag">🇮🇳</span>
+                <span>+91</span>
+                <span className="login-country-arrow">⌄</span>
               </div>
+
+              <input
+                id="loginMobile"
+                type="tel"
+                name="mobileNumber"
+                placeholder="Enter mobile number"
+                value={mobileNumber}
+                onChange={handleMobileChange}
+                maxLength={10}
+                inputMode="numeric"
+                autoComplete="tel-national"
+                required
+              />
             </div>
 
-            <div className="login-form-group">
-              <label htmlFor="loginMpin">App MPIN</label>
-
-              <div className="login-input-wrapper">
-                <input
-                    id="loginMpin"
-                    type={showMpin ? "text" : "password"}
-                    name="mpin"
-                    placeholder="Enter your 6-digit MPIN"
-                    value={formData.mpin}
-                    onChange={handleChange}
-                    maxLength={6}
-                    inputMode="numeric"
-                    autoComplete="current-password"
-                    required
-                />
-
-                <button
-                    type="button"
-                    className="mpin-toggle"
-                    onClick={() =>
-                        setShowMpin((previous) => !previous)
-                    }
-                >
-                  {showMpin ? "Hide" : "Show"}
-                </button>
-              </div>
+            <div className="login-input-info">
+              <span>Demo OTP verification</span>
+              <span>{mobileNumber.length}/10</span>
             </div>
-
-            {error && (
-                <div className="login-error" role="alert">
-                  {error}
-                </div>
-            )}
-
-            <button
-                type="submit"
-                className="login-submit"
-                disabled={loading}
-            >
-              {loading ? "Logging in..." : "Login to PayWave"}
-              <span>→</span>
-            </button>
-
-          </form>
-
-          <div className="login-register">
-            <p>New to PayWave?</p>
-
-            <button
-                type="button"
-                onClick={onRegister}
-                disabled={loading}
-            >
-              Create an account
-            </button>
           </div>
 
-        </div>
+          {error && (
+            <div className="login-error" role="alert">
+              {typeof error === "string"
+                ? error
+                : "Unable to send OTP. Please try again."}
+            </div>
+          )}
 
-        <div className="login-security">
-          <span>◆</span>
-          Your security is our priority.
-        </div>
+          <button
+            type="submit"
+            className="login-submit"
+            disabled={mobileNumber.length !== 10 || loading}
+          >
+            {loading ? "Sending OTP..." : "Continue"}
+            <span>→</span>
+          </button>
+        </form>
 
-      </main>
+        <p className="login-terms">
+          By proceeding, you consent to PayWave's{" "}
+          <a href="#terms">Terms of Service</a>
+          {" "}and{" "}
+          <a href="#privacy">Privacy Policy</a>.
+        </p>
+      </section>
+
+      <div className="login-home-indicator" />
+    </main>
   );
 }
 

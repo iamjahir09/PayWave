@@ -23,7 +23,7 @@ export const verifyBankAccountOtp = (payload) => api.post("/api/bank-accounts/ve
 export const getBankAccounts = () => api.get("/api/bank-accounts/my-accounts");
 export const setPrimaryBankAccount = (id) => api.put(`/api/bank-accounts/${id}/primary`);
 export const deleteBankAccount = (id) => api.delete(`/api/bank-accounts/${id}`);
-export const checkBankBalance = (payload) =>api.post("/api/bank-accounts/check-balance", payload);
+export const checkBankBalance = (payload) => api.post("/api/bank-accounts/check-balance", payload);
 
 // Bill payments: billType must be MOBILE_RECHARGE, ELECTRICITY, DTH_RECHARGE, or WATER
 export const payBill = (payload) => api.post("/api/bill-payments", payload);
@@ -46,4 +46,10 @@ export const getPaymentReminders = () => api.get("/api/payment-reminders");
 export const updatePaymentReminder = (id, payload) => api.put(`/api/payment-reminders/${id}`, payload);
 export const markReminderPaid = (id) => api.patch(`/api/payment-reminders/${id}/paid`);
 export const deletePaymentReminder = (id) => api.delete(`/api/payment-reminders/${id}`);
-export const getPayWaveRecipient = (paywaveId) =>api.get("/api/users/lookup", {params: { paywaveId },});
+export const getPayWaveRecipient = (paywaveId) => api.get("/api/users/lookup", { params: { paywaveId }, });
+
+// Send Demo OTP
+export const sendOtp = (mobileNumber) =>api.post("/api/auth/send-otp", { mobileNumber });
+
+// Verify Demo OTP
+export const verifyOtp = (mobileNumber, otp) =>api.post("/api/auth/verify-otp", {mobileNumber,otp,});
